@@ -24,9 +24,9 @@ const Search = () => {
     setSearchTerm(newSearchTerm);
 
     if (newSearchTerm.trim() !== '') {
-      if (location.pathname === '/userlist') {
-        navigate(`/userlist?search=${newSearchTerm}`);
-      } else if (location.pathname === '/dashboard') {
+      if (location.pathname === '/userslist') {
+        navigate(`/userslist?search=${newSearchTerm}`);
+      } else if (location.pathname === '/imageslider') {
         navigate(`/imageslider?search=${newSearchTerm}`);
       }
     }

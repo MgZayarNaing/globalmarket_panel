@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api';
+const API = 'http://localhost:8000'
 
 export const ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/login/`,
@@ -62,7 +63,7 @@ export const createUser = async (data) => {
     }
 };
 
-export { API_BASE_URL };
+export { API_BASE_URL,API };
 
 export const searchUsers = async (params) => {
     try {
