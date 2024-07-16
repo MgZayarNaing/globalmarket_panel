@@ -39,6 +39,13 @@ const pages = {
         url: '/imageslider',
         icon: icons.AntDesignOutlined,
       },
+      {
+        id: 'future',
+        title: 'Future',
+        type: 'item',
+        url: '/future',
+        icon: icons.AntDesignOutlined,
+      },
     ]
 };
 

@@ -10,6 +10,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 // render - sample page
 const UserList = Loadable(lazy(() => import('pages/users/UserList')));
 const ImageSlider = Loadable(lazy(() => import('pages/imageslider/ImageSlider')));
+const Future = Loadable(lazy(() => import('pages/future/Future')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -37,6 +38,10 @@ const MainRoutes = {
     {
       path: 'imageslider',
       element: <ImageSlider />
+    },
+    {
+      path: 'future',
+      element: <Future />
     },
 
   ]

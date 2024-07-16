@@ -17,6 +17,12 @@ export const ENDPOINTS = {
     IMAGE_SLIDER_UPDATE: (pk) => `${API_BASE_URL}/imageslider/${pk}/update/`,
     IMAGE_SLIDER_DELETE: (pk) => `${API_BASE_URL}/imageslider/${pk}/delete/`,
     IMAGE_SLIDER_CREATE: `${API_BASE_URL}/imageslider/create/`,
+
+    FUTURES: `${API_BASE_URL}/futures/`,
+    FUTURE_DETAIL: (pk) => `${API_BASE_URL}/futures/${pk}/`,
+    FUTURE_UPDATE: (pk) => `${API_BASE_URL}/futures/${pk}/update/`,
+    FUTURE_DELETE: (pk) => `${API_BASE_URL}/futures/${pk}/delete/`,
+    FUTURE_CREATE: `${API_BASE_URL}/futures/create/`,
 };
 
 export const login = async (credentials) => {
