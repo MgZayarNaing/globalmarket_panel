@@ -1,0 +1,45 @@
+// assets
+import {
+    AppstoreAddOutlined,
+    AntDesignOutlined,
+    BarcodeOutlined,
+    BgColorsOutlined,
+    FontSizeOutlined,
+    LoadingOutlined
+} from '@ant-design/icons';
+
+// icons
+const icons = {
+    FontSizeOutlined,
+    BgColorsOutlined,
+    BarcodeOutlined,
+    AntDesignOutlined,
+    LoadingOutlined,
+    AppstoreAddOutlined
+};
+
+// ============================== MENU ITEMS - UTILITIES ============================== //
+
+const pages = {
+    id: 'User',
+    title: 'User',
+    type: 'group',
+    children: [
+      {
+        id: 'userlist',
+        title: 'UserList',
+        type: 'item',
+        url: '/userslist',
+        icon: icons.AntDesignOutlined,
+      },
+      {
+        id: 'imageslider',
+        title: 'ImageSlider',
+        type: 'item',
+        url: '/imageslider',
+        icon: icons.AntDesignOutlined,
+      },
+    ]
+};
+
+export default pages;
