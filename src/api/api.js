@@ -44,6 +44,12 @@ export const ENDPOINTS = {
     COIN_UPDATE: (pk) => `${API_BASE_URL}/coins/${pk}/update/`,
     COIN_DELETE: (pk) => `${API_BASE_URL}/coins/${pk}/delete/`,
     COIN_CREATE: `${API_BASE_URL}/coins/create/`,
+
+    DEPOSITS: `${API_BASE_URL}/deposits/`,
+    DEPOSIT_DETAIL: (pk) => `${API_BASE_URL}/deposits/${pk}/`,
+    DEPOSIT_UPDATE: (pk) => `${API_BASE_URL}/deposits/${pk}/update/`,
+    DEPOSIT_DELETE: (pk) => `${API_BASE_URL}/deposits/${pk}/delete/`,
+    DEPOSIT_CREATE: `${API_BASE_URL}/deposits/create/`,
 };
 
 export const login = async (credentials) => {
@@ -216,6 +222,46 @@ export const getCoinDetail = async (pk) => {
         return response.data;
     } catch (error) {
         console.error('Get coin detail error:', error);
+        throw error;
+    }
+};
+
+export const createDeposit = async (data) => {
+    try {
+        const response = await api.post(ENDPOINTS.DEPOSIT_CREATE, data);
+        return response.data;
+    } catch (error) {
+        console.error('Create deposit error:', error);
+        throw error;
+    }
+};
+
+export const updateDeposit = async (pk, data) => {
+    try {
+        const response = await api.put(ENDPOINTS.DEPOSIT_UPDATE(pk), data);
+        return response.data;
+    } catch (error) {
+        console.error('Update deposit error:', error);
+        throw error;
+    }
+};
+
+export const deleteDeposit = async (pk) => {
+    try {
+        const response = await api.delete(ENDPOINTS.DEPOSIT_DELETE(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Delete deposit error:', error);
+        throw error;
+    }
+};
+
+export const getDepositDetail = async (pk) => {
+    try {
+        const response = await api.get(ENDPOINTS.DEPOSIT_DETAIL(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Get deposit detail error:', error);
         throw error;
     }
 };

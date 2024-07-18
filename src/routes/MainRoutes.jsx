@@ -14,6 +14,7 @@ const Future = Loadable(lazy(() => import('pages/future/Future')));
 const CoinType = Loadable(lazy(() => import('pages/cointype/CoinType')));
 const Networks = Loadable(lazy(() => import('pages/networks/Networks')));
 const Coin = Loadable(lazy(() => import('pages/coin/Coin')));
+const Deposit = Loadable(lazy(() => import('pages/deposit/Deposit')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -57,6 +58,10 @@ const MainRoutes = {
     {
       path: 'coin',
       element: <Coin />
+    },
+    {
+      path: 'deposit',
+      element: <Deposit />
     },
 
   ]

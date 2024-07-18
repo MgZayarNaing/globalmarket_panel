@@ -67,6 +67,13 @@ const pages = {
         url: '/coin',
         icon: icons.AntDesignOutlined,
       },
+      {
+        id: 'deposit',
+        title: 'Deposit',
+        type: 'item',
+        url: '/deposit',
+        icon: icons.AntDesignOutlined,
+      },
     ]
 };
 
