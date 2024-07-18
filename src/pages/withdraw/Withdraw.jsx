@@ -3,8 +3,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { api, ENDPOINTS } from '../../api/api';
 import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl, Checkbox, FormControlLabel } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { useLocation } from 'react-router-dom';
 
 const WithdrawList = () => {
@@ -21,8 +19,7 @@ const WithdrawList = () => {
         coin_type: '',
         network_type: '',
         user_link_address: '',
-        status: false,
-        fail_status: false,
+        status: 0,
     });
     const [customers, setCustomers] = useState([]);
     const [coinTypes, setCoinTypes] = useState([]);
@@ -111,7 +108,6 @@ const WithdrawList = () => {
                 network_type: selectedWithdraw.network_type || '',
                 user_link_address: selectedWithdraw.user_link_address || '',
                 status: selectedWithdraw.status,
-                fail_status: selectedWithdraw.fail_status,
             });
         }
     }, [selectedWithdraw]);
@@ -206,8 +202,7 @@ const WithdrawList = () => {
             coin_type: '',
             network_type: '',
             user_link_address: '',
-            status: false,
-            fail_status: false,
+            status: 0,
         });
         setIsCreate(true);
         setOpenModal(true);
@@ -228,6 +223,19 @@ const WithdrawList = () => {
         }
     };
 
+    const getStatusText = (status) => {
+        switch (status) {
+            case 0:
+                return <span style={{ color: 'grey' }}>Pending</span>;
+            case 1:
+                return <span style={{ color: 'green' }}>Successful</span>;
+            case 2:
+                return <span style={{ color: 'red' }}>Failed</span>;
+            default:
+                return '';
+        }
+    };
+
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'quantity', headerName: 'Quantity', width: 200 },
@@ -238,18 +246,8 @@ const WithdrawList = () => {
         {
             field: 'status',
             headerName: 'Status',
-            width: 100,
-            renderCell: (params) => (
-                params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'red' }} />
-            ),
-        },
-        {
-            field: 'fail_status',
-            headerName: 'Fail Status',
-            width: 100,
-            renderCell: (params) => (
-                params.value ? <CancelIcon style={{ color: 'red' }} /> : <CheckCircleIcon style={{ color: 'green' }} />
-            ),
+            width: 150,
+            renderCell: (params) => getStatusText(params.value),
         },
         { field: 'time', headerName: 'Time', width: 200 },
         {
@@ -282,7 +280,6 @@ const WithdrawList = () => {
         network_type_name: withdraw.network_type_name,
         user_link_address: withdraw.user_link_address,
         status: withdraw.status,
-        fail_status: withdraw.fail_status,
         time: withdraw.time,
     }));
 
@@ -388,26 +385,20 @@ const WithdrawList = () => {
                             value={formValues.user_link_address}
                             onChange={handleInputChange}
                         />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={formValues.status}
-                                    onChange={handleCheckboxChange}
-                                    name="status"
-                                />
-                            }
-                            label="Status"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={formValues.fail_status}
-                                    onChange={handleCheckboxChange}
-                                    name="fail_status"
-                                />
-                            }
-                            label="Fail Status"
-                        />
+                        <FormControl fullWidth margin="dense" variant="outlined">
+                            <InputLabel id="status-label">Status</InputLabel>
+                            <Select
+                                labelId="status-label"
+                                label="Status"
+                                name="status"
+                                value={formValues.status}
+                                onChange={handleSelectChange}
+                            >
+                                <MenuItem value={0}>Pending</MenuItem>
+                                <MenuItem value={1}>Successful</MenuItem>
+                                <MenuItem value={2}>Failed</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Box>
                 </DialogContent>
                 <DialogActions>
