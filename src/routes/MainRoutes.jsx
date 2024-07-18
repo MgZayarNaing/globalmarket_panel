@@ -16,7 +16,6 @@ const Networks = Loadable(lazy(() => import('pages/networks/Networks')));
 const Coin = Loadable(lazy(() => import('pages/coin/Coin')));
 const Deposit = Loadable(lazy(() => import('pages/deposit/Deposit')));
 const Withdraw = Loadable(lazy(() => import('pages/withdraw/Withdraw')));
-const DepositHistory = Loadable(lazy(() => import('pages/deposithistory/DepositHistory')));
 
 
 // ==============================|| MAIN ROUTING ||============================== //
