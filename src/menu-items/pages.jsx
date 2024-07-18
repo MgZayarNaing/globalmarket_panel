@@ -53,6 +53,13 @@ const pages = {
         url: '/cointype',
         icon: icons.AntDesignOutlined,
       },
+      {
+        id: 'networks',
+        title: 'Networks',
+        type: 'item',
+        url: '/networks',
+        icon: icons.AntDesignOutlined,
+      },
     ]
 };
 

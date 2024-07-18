@@ -32,6 +32,18 @@ export const ENDPOINTS = {
     COINTYPE_UPDATE: (pk) => `${API_BASE_URL}/cointypes/${pk}/update/`,
     COINTYPE_DELETE: (pk) => `${API_BASE_URL}/cointypes/${pk}/delete/`,
     COINTYPE_CREATE: `${API_BASE_URL}/cointypes/create/`,
+
+    NETWORKS: `${API_BASE_URL}/networks/`,
+    NETWORK_DETAIL: (pk) => `${API_BASE_URL}/networks/${pk}/`,
+    NETWORK_UPDATE: (pk) => `${API_BASE_URL}/networks/${pk}/update/`,
+    NETWORK_DELETE: (pk) => `${API_BASE_URL}/networks/${pk}/delete/`,
+    NETWORK_CREATE: `${API_BASE_URL}/networks/create/`,
+
+    COINS: `${API_BASE_URL}/coins/`,
+    COIN_DETAIL: (pk) => `${API_BASE_URL}/coins/${pk}/`,
+    COIN_UPDATE: (pk) => `${API_BASE_URL}/coins/${pk}/update/`,
+    COIN_DELETE: (pk) => `${API_BASE_URL}/coins/${pk}/delete/`,
+    COIN_CREATE: `${API_BASE_URL}/coins/create/`,
 };
 
 export const login = async (credentials) => {
@@ -124,6 +136,86 @@ export const getCoinTypeDetail = async (pk) => {
         return response.data;
     } catch (error) {
         console.error('Get cointype detail error:', error);
+        throw error;
+    }
+};
+
+export const createNetwork = async (data) => {
+    try {
+        const response = await api.post(ENDPOINTS.NETWORK_CREATE, data);
+        return response.data;
+    } catch (error) {
+        console.error('Create network error:', error);
+        throw error;
+    }
+};
+
+export const updateNetwork = async (pk, data) => {
+    try {
+        const response = await api.put(ENDPOINTS.NETWORK_UPDATE(pk), data);
+        return response.data;
+    } catch (error) {
+        console.error('Update network error:', error);
+        throw error;
+    }
+};
+
+export const deleteNetwork = async (pk) => {
+    try {
+        const response = await api.delete(ENDPOINTS.NETWORK_DELETE(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Delete network error:', error);
+        throw error;
+    }
+};
+
+export const getNetworkDetail = async (pk) => {
+    try {
+        const response = await api.get(ENDPOINTS.NETWORK_DETAIL(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Get network detail error:', error);
+        throw error;
+    }
+};
+
+export const createCoin = async (data) => {
+    try {
+        const response = await api.post(ENDPOINTS.COIN_CREATE, data);
+        return response.data;
+    } catch (error) {
+        console.error('Create coin error:', error);
+        throw error;
+    }
+};
+
+export const updateCoin = async (pk, data) => {
+    try {
+        const response = await api.put(ENDPOINTS.COIN_UPDATE(pk), data);
+        return response.data;
+    } catch (error) {
+        console.error('Update coin error:', error);
+        throw error;
+    }
+};
+
+export const deleteCoin = async (pk) => {
+    try {
+        const response = await api.delete(ENDPOINTS.COIN_DELETE(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Delete coin error:', error);
+        throw error;
+    }
+};
+
+export const getCoinDetail = async (pk) => {
+    try {
+        const response = await api.get(ENDPOINTS.COIN_DETAIL(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Get coin detail error:', error);
         throw error;
     }
 };
