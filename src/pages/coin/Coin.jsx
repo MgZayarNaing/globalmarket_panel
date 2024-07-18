@@ -128,6 +128,14 @@ const CoinList = () => {
         setFormValues({ ...formValues, [name]: value });
     };
 
+    const handleSelectChange = (event) => {
+        const { name, value } = event.target;
+        setFormValues((prevFormValues) => ({
+            ...prevFormValues,
+            [name]: value,
+        }));
+    };
+
     const handleUpdateCoin = async () => {
         try {
             await api.put(ENDPOINTS.COIN_UPDATE(formValues.id), formValues);
@@ -281,10 +289,10 @@ const CoinList = () => {
                                 label="Customer"
                                 name="customer"
                                 value={formValues.customer || ''}
-                                onChange={handleInputChange}
+                                onChange={handleSelectChange}
                             >
                                 {customers.map((customer) => (
-                                    <MenuItem key={customer.id} value={customer.id}>
+                                    <MenuItem key={customer.uuid} value={customer.uuid}>
                                         {customer.name}
                                     </MenuItem>
                                 ))}
@@ -297,11 +305,11 @@ const CoinList = () => {
                                 label="Coin Type"
                                 name="coin_type"
                                 value={formValues.coin_type || ''}
-                                onChange={handleInputChange}
+                                onChange={handleSelectChange}
                             >
                                 {coinTypes.map((coinType) => (
                                     <MenuItem key={coinType.id} value={coinType.id}>
-                                        {coinType.name}
+                                        {coinType.type}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -313,11 +321,11 @@ const CoinList = () => {
                                 label="Network Type"
                                 name="network_type"
                                 value={formValues.network_type || ''}
-                                onChange={handleInputChange}
+                                onChange={handleSelectChange}
                             >
                                 {networkTypes.map((networkType) => (
                                     <MenuItem key={networkType.id} value={networkType.id}>
-                                        {networkType.name}
+                                        {networkType.type}
                                     </MenuItem>
                                 ))}
                             </Select>
