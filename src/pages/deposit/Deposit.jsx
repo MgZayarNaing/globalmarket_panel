@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { api, ENDPOINTS } from '../../api/api';
-import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl } from '@mui/material';
+import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl, Checkbox, FormControlLabel } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { useLocation } from 'react-router-dom';
 
 const DepositList = () => {
@@ -131,6 +133,11 @@ const DepositList = () => {
         setFormValues({ ...formValues, [name]: value });
     };
 
+    const handleCheckboxChange = (event) => {
+        const { name, checked } = event.target;
+        setFormValues({ ...formValues, [name]: checked });
+    };
+
     const handleSelectChange = (event) => {
         const { name, value } = event.target;
         setFormValues((prevFormValues) => ({
@@ -211,8 +218,22 @@ const DepositList = () => {
         { field: 'customer', headerName: 'Customer', width: 200 },
         { field: 'coin_type', headerName: 'Coin Type', width: 200 },
         { field: 'network_type', headerName: 'Network Type', width: 200 },
-        { field: 'status', headerName: 'Status', width: 200 },
-        { field: 'fail_status', headerName: 'Fail Status', width: 200 },
+        { 
+            field: 'status', 
+            headerName: 'Status', 
+            width: 100,
+            renderCell: (params) => (
+                params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'red' }} />
+            ),
+        },
+        { 
+            field: 'fail_status', 
+            headerName: 'Fail Status', 
+            width: 100,
+            renderCell: (params) => (
+                params.value ? <CancelIcon style={{ color: 'red' }} /> : <CheckCircleIcon style={{ color: 'green' }} />
+            ),
+        },
         { field: 'time', headerName: 'Time', width: 200 },
         {
             field: 'actions',
@@ -340,23 +361,25 @@ const DepositList = () => {
                                 ))}
                             </Select>
                         </FormControl>
-                        <TextField
-                            margin="dense"
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={formValues.status}
+                                    onChange={handleCheckboxChange}
+                                    name="status"
+                                />
+                            }
                             label="Status"
-                            fullWidth
-                            variant="outlined"
-                            name="status"
-                            value={formValues.status}
-                            onChange={handleInputChange}
                         />
-                        <TextField
-                            margin="dense"
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={formValues.fail_status}
+                                    onChange={handleCheckboxChange}
+                                    name="fail_status"
+                                />
+                            }
                             label="Fail Status"
-                            fullWidth
-                            variant="outlined"
-                            name="fail_status"
-                            value={formValues.fail_status}
-                            onChange={handleInputChange}
                         />
                     </Box>
                 </DialogContent>
