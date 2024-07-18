@@ -74,6 +74,20 @@ const pages = {
         url: '/deposit',
         icon: icons.AntDesignOutlined,
       },
+      {
+        id: 'withdraw',
+        title: 'Withdraw',
+        type: 'item',
+        url: '/withdraw',
+        icon: icons.AntDesignOutlined,
+      },
+      {
+        id: 'deposithistory',
+        title: 'Deposit History',
+        type: 'item',
+        url: '/deposithistory',
+        icon: icons.AntDesignOutlined,
+      },
     ]
 };
 

@@ -7,12 +7,12 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useLocation } from 'react-router-dom';
 
-const DepositList = () => {
-    const [deposits, setDeposits] = useState([]);
+const WithdrawList = () => {
+    const [withdraws, setWithdraws] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedDeposit, setSelectedDeposit] = useState(null);
+    const [selectedWithdraw, setSelectedWithdraw] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [formValues, setFormValues] = useState({
         id: '',
@@ -20,9 +20,9 @@ const DepositList = () => {
         customer: '',
         coin_type: '',
         network_type: '',
+        user_link_address: '',
         status: false,
         fail_status: false,
-        screenshot: null
     });
     const [customers, setCustomers] = useState([]);
     const [coinTypes, setCoinTypes] = useState([]);
@@ -36,11 +36,27 @@ const DepositList = () => {
 
     const location = useLocation();
 
-    const fetchDeposits = async (searchQuery = '', page = 1, pageSize = 10) => {
+    const fetchWithdraws = async (searchQuery = '', page = 1, pageSize = 10) => {
         try {
             setLoading(true);
-            const response = await api.get(`${ENDPOINTS.DEPOSITS}?search=${searchQuery}&page=${page}&page_size=${pageSize}`);
-            setDeposits(response.data.results || []);
+            const response = await api.get(`${ENDPOINTS.WITHDRAWS}?search=${searchQuery}&page=${page}&page_size=${pageSize}`);
+            const withdrawsData = response.data.results || [];
+
+            const enrichedWithdraws = await Promise.all(
+                withdrawsData.map(async (withdraw) => {
+                    const customerResponse = await api.get(ENDPOINTS.USER_DETAIL(withdraw.customer));
+                    const coinTypeResponse = await api.get(ENDPOINTS.COINTYPE_DETAIL(withdraw.coin_type));
+                    const networkTypeResponse = await api.get(ENDPOINTS.NETWORK_DETAIL(withdraw.network_type));
+                    return {
+                        ...withdraw,
+                        customer_name: customerResponse.data.name,
+                        coin_type_name: coinTypeResponse.data.type,
+                        network_type_name: networkTypeResponse.data.type,
+                    };
+                })
+            );
+
+            setWithdraws(enrichedWithdraws);
             setTotalCount(response.data.count || 0);
             setLoading(false);
         } catch (error) {
@@ -79,26 +95,26 @@ const DepositList = () => {
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const searchQuery = params.get('search') || '';
-        fetchDeposits(searchQuery, page, pageSize);
+        fetchWithdraws(searchQuery, page, pageSize);
         fetchCustomers();
         fetchCoinTypes();
         fetchNetworkTypes();
     }, [location.search, page, pageSize]);
 
     useEffect(() => {
-        if (selectedDeposit) {
+        if (selectedWithdraw) {
             setFormValues({
-                id: selectedDeposit.id,
-                quantity: selectedDeposit.quantity,
-                customer: selectedDeposit.customer || '',
-                coin_type: selectedDeposit.coin_type || '',
-                network_type: selectedDeposit.network_type || '',
-                status: selectedDeposit.status,
-                fail_status: selectedDeposit.fail_status,
-                screenshot: selectedDeposit.screenshot
+                id: selectedWithdraw.id,
+                quantity: selectedWithdraw.quantity,
+                customer: selectedWithdraw.customer || '',
+                coin_type: selectedWithdraw.coin_type || '',
+                network_type: selectedWithdraw.network_type || '',
+                user_link_address: selectedWithdraw.user_link_address || '',
+                status: selectedWithdraw.status,
+                fail_status: selectedWithdraw.fail_status,
             });
         }
-    }, [selectedDeposit]);
+    }, [selectedWithdraw]);
 
     if (loading) {
         return <Container><CircularProgress /></Container>;
@@ -108,9 +124,9 @@ const DepositList = () => {
         return <Container>Error: {error.message}</Container>;
     }
 
-    const handleMenuClick = (event, deposit) => {
+    const handleMenuClick = (event, withdraw) => {
         setAnchorEl(event.currentTarget);
-        setSelectedDeposit(deposit);
+        setSelectedWithdraw(withdraw);
         setIsCreate(false);
     };
 
@@ -146,39 +162,39 @@ const DepositList = () => {
         }));
     };
 
-    const handleUpdateDeposit = async () => {
+    const handleUpdateWithdraw = async () => {
         try {
-            await api.put(ENDPOINTS.DEPOSIT_UPDATE(formValues.id), formValues);
+            await api.put(ENDPOINTS.WITHDRAW_UPDATE(formValues.id), formValues);
             setOpenModal(false);
-            fetchDeposits();
-            setSnackbar({ open: true, message: 'Deposit updated successfully', severity: 'success' });
+            fetchWithdraws();
+            setSnackbar({ open: true, message: 'Withdraw updated successfully', severity: 'success' });
         } catch (error) {
-            console.error('Update Deposit error:', error);
-            setSnackbar({ open: true, message: 'Failed to update Deposit', severity: 'error' });
+            console.error('Update Withdraw error:', error);
+            setSnackbar({ open: true, message: 'Failed to update Withdraw', severity: 'error' });
         }
     };
 
-    const handleDeleteDeposit = async (id) => {
+    const handleDeleteWithdraw = async (id) => {
         try {
-            await api.delete(ENDPOINTS.DEPOSIT_DELETE(id));
+            await api.delete(ENDPOINTS.WITHDRAW_DELETE(id));
             setOpenModal(false);
-            fetchDeposits();
-            setSnackbar({ open: true, message: 'Deposit deleted successfully', severity: 'success' });
+            fetchWithdraws();
+            setSnackbar({ open: true, message: 'Withdraw deleted successfully', severity: 'success' });
         } catch (error) {
-            console.error('Delete Deposit error:', error);
-            setSnackbar({ open: true, message: 'Failed to delete Deposit', severity: 'error' });
+            console.error('Delete Withdraw error:', error);
+            setSnackbar({ open: true, message: 'Failed to delete Withdraw', severity: 'error' });
         }
     };
 
-    const handleCreateDeposit = async () => {
+    const handleCreateWithdraw = async () => {
         try {
-            await api.post(ENDPOINTS.DEPOSIT_CREATE, formValues);
+            await api.post(ENDPOINTS.WITHDRAW_CREATE, formValues);
             setOpenModal(false);
-            fetchDeposits();
-            setSnackbar({ open: true, message: 'Deposit created successfully', severity: 'success' });
+            fetchWithdraws();
+            setSnackbar({ open: true, message: 'Withdraw created successfully', severity: 'success' });
         } catch (error) {
-            console.error('Create Deposit error:', error);
-            setSnackbar({ open: true, message: 'Failed to create Deposit', severity: 'error' });
+            console.error('Create Withdraw error:', error);
+            setSnackbar({ open: true, message: 'Failed to create Withdraw', severity: 'error' });
         }
     };
 
@@ -189,9 +205,9 @@ const DepositList = () => {
             customer: '',
             coin_type: '',
             network_type: '',
+            user_link_address: '',
             status: false,
             fail_status: false,
-            screenshot: null
         });
         setIsCreate(true);
         setOpenModal(true);
@@ -203,21 +219,22 @@ const DepositList = () => {
 
     const handleBulkDelete = async () => {
         try {
-            await Promise.all(selectionModel.map(id => handleDeleteDeposit(id)));
-            setSnackbar({ open: true, message: 'Selected Deposits deleted successfully', severity: 'success' });
+            await Promise.all(selectionModel.map(id => handleDeleteWithdraw(id)));
+            setSnackbar({ open: true, message: 'Selected Withdraws deleted successfully', severity: 'success' });
             setSelectionModel([]);  // Clear selection model after deletion
         } catch (error) {
             console.error('Bulk delete error:', error);
-            setSnackbar({ open: true, message: 'Failed to delete selected Deposits', severity: 'error' });
+            setSnackbar({ open: true, message: 'Failed to delete selected Withdraws', severity: 'error' });
         }
     };
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'quantity', headerName: 'Quantity', width: 200 },
-        { field: 'customer', headerName: 'Customer', width: 200 },
-        { field: 'coin_type', headerName: 'Coin Type', width: 200 },
-        { field: 'network_type', headerName: 'Network Type', width: 200 },
+        { field: 'customer_name', headerName: 'Customer', width: 200 },
+        { field: 'coin_type_name', headerName: 'Coin Type', width: 200 },
+        { field: 'network_type_name', headerName: 'Network Type', width: 200 },
+        { field: 'user_link_address', headerName: 'User Link Address', width: 200 },
         {
             field: 'status',
             headerName: 'Status',
@@ -250,28 +267,29 @@ const DepositList = () => {
                         onClose={handleMenuClose}
                     >
                         <MenuItem onClick={handleDetailClick}>Detail</MenuItem>
-                        <MenuItem onClick={() => handleDeleteDeposit(params.row.id)}>Delete</MenuItem>
+                        <MenuItem onClick={() => handleDeleteWithdraw(params.row.id)}>Delete</MenuItem>
                     </Menu>
                 </div>
             ),
         },
     ];
 
-    const rows = deposits.map((deposit) => ({
-        id: deposit.id,
-        quantity: deposit.quantity,
-        customer: deposit.customer,
-        coin_type: deposit.coin_type,
-        network_type: deposit.network_type,
-        status: deposit.status,
-        fail_status: deposit.fail_status,
-        time: deposit.time,
+    const rows = withdraws.map((withdraw) => ({
+        id: withdraw.id,
+        quantity: withdraw.quantity,
+        customer_name: withdraw.customer_name,
+        coin_type_name: withdraw.coin_type_name,
+        network_type_name: withdraw.network_type_name,
+        user_link_address: withdraw.user_link_address,
+        status: withdraw.status,
+        fail_status: withdraw.fail_status,
+        time: withdraw.time,
     }));
 
     return (
         <Container>
-            <h2>Deposit List</h2>
-            <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create Deposit</Button>
+            <h2>Withdraw List</h2>
+            <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create Withdraw</Button>
             <Button variant="contained" color="secondary" onClick={handleBulkDelete} style={{ marginLeft: 16 }} disabled={selectionModel.length === 0}>Delete Selected</Button>
 
             <div style={{ height: 600, width: '100%', marginTop: 16 }}>
@@ -291,7 +309,7 @@ const DepositList = () => {
             </div>
 
             <Dialog open={openModal} onClose={handleCloseModal}>
-                <DialogTitle>{isCreate ? 'Create Deposit' : 'Deposit Details'}</DialogTitle>
+                <DialogTitle>{isCreate ? 'Create Withdraw' : 'Withdraw Details'}</DialogTitle>
                 <DialogContent>
                     <Box component="form" noValidate autoComplete="off">
                         {!isCreate && (
@@ -361,6 +379,15 @@ const DepositList = () => {
                                 ))}
                             </Select>
                         </FormControl>
+                        <TextField
+                            margin="dense"
+                            label="User Link Address"
+                            fullWidth
+                            variant="outlined"
+                            name="user_link_address"
+                            value={formValues.user_link_address}
+                            onChange={handleInputChange}
+                        />
                         <FormControlLabel
                             control={
                                 <Checkbox
@@ -386,11 +413,11 @@ const DepositList = () => {
                 <DialogActions>
                     <Button onClick={handleCloseModal} color="primary">Close</Button>
                     {isCreate ? (
-                        <Button onClick={handleCreateDeposit} color="primary">Create</Button>
+                        <Button onClick={handleCreateWithdraw} color="primary">Create</Button>
                     ) : (
                         <>
-                            <Button onClick={handleUpdateDeposit} color="primary">Update</Button>
-                            <Button onClick={() => handleDeleteDeposit(formValues.id)} color="secondary">Delete</Button>
+                            <Button onClick={handleUpdateWithdraw} color="primary">Update</Button>
+                            <Button onClick={() => handleDeleteWithdraw(formValues.id)} color="secondary">Delete</Button>
                         </>
                     )}
                 </DialogActions>
@@ -405,4 +432,4 @@ const DepositList = () => {
     );
 };
 
-export default DepositList;
+export default WithdrawList;

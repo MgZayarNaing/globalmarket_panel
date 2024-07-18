@@ -50,6 +50,18 @@ export const ENDPOINTS = {
     DEPOSIT_UPDATE: (pk) => `${API_BASE_URL}/deposits/${pk}/update/`,
     DEPOSIT_DELETE: (pk) => `${API_BASE_URL}/deposits/${pk}/delete/`,
     DEPOSIT_CREATE: `${API_BASE_URL}/deposits/create/`,
+
+    WITHDRAWS: `${API_BASE_URL}/withdraws/`,
+    WITHDRAW_DETAIL: (pk) => `${API_BASE_URL}/withdraws/${pk}/`,
+    WITHDRAW_UPDATE: (pk) => `${API_BASE_URL}/withdraws/${pk}/update/`,
+    WITHDRAW_DELETE: (pk) => `${API_BASE_URL}/withdraws/${pk}/delete/`,
+    WITHDRAW_CREATE: `${API_BASE_URL}/withdraws/create/`,
+
+    DEPOSIT_HISTORIES: `${API_BASE_URL}/deposit-histories/`,
+    DEPOSIT_HISTORY_DETAIL: (pk) => `${API_BASE_URL}/deposit-histories/${pk}/`,
+    DEPOSIT_HISTORY_UPDATE: (pk) => `${API_BASE_URL}/deposit-histories/${pk}/update/`,
+    DEPOSIT_HISTORY_DELETE: (pk) => `${API_BASE_URL}/deposit-histories/${pk}/delete/`,
+    DEPOSIT_HISTORY_CREATE: `${API_BASE_URL}/deposit-histories/create/`,
 };
 
 export const login = async (credentials) => {
@@ -262,6 +274,86 @@ export const getDepositDetail = async (pk) => {
         return response.data;
     } catch (error) {
         console.error('Get deposit detail error:', error);
+        throw error;
+    }
+};
+
+export const createWithdraw = async (data) => {
+    try {
+        const response = await api.post(ENDPOINTS.WITHDRAW_CREATE, data);
+        return response.data;
+    } catch (error) {
+        console.error('Create withdraw error:', error);
+        throw error;
+    }
+};
+
+export const updateWithdraw = async (pk, data) => {
+    try {
+        const response = await api.put(ENDPOINTS.WITHDRAW_UPDATE(pk), data);
+        return response.data;
+    } catch (error) {
+        console.error('Update withdraw error:', error);
+        throw error;
+    }
+};
+
+export const deleteWithdraw = async (pk) => {
+    try {
+        const response = await api.delete(ENDPOINTS.WITHDRAW_DELETE(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Delete withdraw error:', error);
+        throw error;
+    }
+};
+
+export const getWithdrawDetail = async (pk) => {
+    try {
+        const response = await api.get(ENDPOINTS.WITHDRAW_DETAIL(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Get withdraw detail error:', error);
+        throw error;
+    }
+};
+
+export const createDepositHistory = async (data) => {
+    try {
+        const response = await api.post(ENDPOINTS.DEPOSIT_HISTORY_CREATE, data);
+        return response.data;
+    } catch (error) {
+        console.error('Create deposit history error:', error);
+        throw error;
+    }
+};
+
+export const updateDepositHistory = async (pk, data) => {
+    try {
+        const response = await api.put(ENDPOINTS.DEPOSIT_HISTORY_UPDATE(pk), data);
+        return response.data;
+    } catch (error) {
+        console.error('Update deposit history error:', error);
+        throw error;
+    }
+};
+
+export const deleteDepositHistory = async (pk) => {
+    try {
+        const response = await api.delete(ENDPOINTS.DEPOSIT_HISTORY_DELETE(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Delete deposit history error:', error);
+        throw error;
+    }
+};
+
+export const getDepositHistoryDetail = async (pk) => {
+    try {
+        const response = await api.get(ENDPOINTS.DEPOSIT_HISTORY_DETAIL(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Get deposit history detail error:', error);
         throw error;
     }
 };
