@@ -60,6 +60,13 @@ const pages = {
         url: '/networks',
         icon: icons.AntDesignOutlined,
       },
+      {
+        id: 'coin',
+        title: 'Coin',
+        type: 'item',
+        url: '/coin',
+        icon: icons.AntDesignOutlined,
+      },
     ]
 };
 
