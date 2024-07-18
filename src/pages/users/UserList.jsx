@@ -68,8 +68,8 @@ const UserList = () => {
     };
 
     fetchUsers();
-    
-  
+
+
   }, []);
 
   useEffect(() => {
@@ -99,7 +99,7 @@ const UserList = () => {
   if (error) {
     return <Container>Error: {error.message}</Container>;
   }
- 
+
   const handleMenuClick = (event, user) => {
     setAnchorEl(event.currentTarget);
     setSelectedUser(user);
@@ -266,13 +266,13 @@ const UserList = () => {
       <h2>User List</h2>
       <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create User</Button>
       <div style={{ height: 600, width: '100%' }}>
-        {rows.length > 0? ( <DataGrid
+        {rows.length > 0 ? (<DataGrid
           rows={rows}
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[5, 10, 20]}
-        />):("No Date Found")}
-       
+        />) : ("No Date Found")}
+
       </div>
 
       <Dialog open={openModal} onClose={handleCloseModal}>

@@ -24,10 +24,10 @@ export default function HeaderContent() {
 
     return (
         <>
-           {location.pathname == "/dashboard/default" && <> </>}
+           {/* {location.pathname == "/dashboard/default" && <> </>}
            {location.pathname === "/userslist" && <Search />}
            {location.pathname === "/imageslider" && <Search />}
-           {location.pathname === "/future" && <Search />}
+           {location.pathname === "/future" && <Search />} */}
 
             {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
             <IconButton

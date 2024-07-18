@@ -19,20 +19,20 @@ const Search = () => {
   //   }
   // };
 
-  const handleSearchChange = (event) => {
-    const newSearchTerm = event.target.value;
-    setSearchTerm(newSearchTerm);
+  // const handleSearchChange = (event) => {
+  //   const newSearchTerm = event.target.value;
+  //   setSearchTerm(newSearchTerm);
 
-    if (newSearchTerm.trim() !== '') {
-      if (location.pathname === '/userslist') {
-        navigate(`/userslist?search=${newSearchTerm}`);
-      } else if (location.pathname === '/imageslider') {
-        navigate(`/imageslider?search=${newSearchTerm}`);
-      }else if (location.pathname === '/future') {
-        navigate(`/future?search=${newSearchTerm}`);
-      }
-    }
-  };
+  //   if (newSearchTerm.trim() !== '') {
+  //     if (location.pathname === '/userslist') {
+  //       navigate(`/userslist?search=${newSearchTerm}`);
+  //     } else if (location.pathname === '/imageslider') {
+  //       navigate(`/imageslider?search=${newSearchTerm}`);
+  //     }else if (location.pathname === '/future') {
+  //       navigate(`/future?search=${newSearchTerm}`);
+  //     }
+  //   }
+  //  };
 
 
   return (
