@@ -30,6 +30,16 @@ const Search = () => {
         navigate(`/imageslider?search=${newSearchTerm}`);
       }else if (location.pathname === '/future') {
         navigate(`/future?search=${newSearchTerm}`);
+      }else if (location.pathname === '/cointype') {
+        navigate(`/cointype?search=${newSearchTerm}`);
+      }else if (location.pathname === '/networks') {
+        navigate(`/networks?search=${newSearchTerm}`);
+      }else if (location.pathname === '/coin') {
+        navigate(`/coin?search=${newSearchTerm}`);
+      }else if (location.pathname === '/deposit') {
+        navigate(`/deposit?search=${newSearchTerm}`);
+      }else if (location.pathname === '/withdraw') {
+        navigate(`/withdraw?search=${newSearchTerm}`);
       }
     }
    };

@@ -28,6 +28,11 @@ export default function HeaderContent() {
            {location.pathname === "/userslist" && <Search />}
            {location.pathname === "/imageslider" && <Search />}
            {location.pathname === "/future" && <Search />}
+           {location.pathname === "/cointype" && <Search />}
+           {location.pathname === "/networks" && <Search />}
+           {location.pathname === "/coin" && <Search />}
+           {location.pathname === "/deposit" && <Search />}
+           {location.pathname === "/withdraw" && <Search />}
 
             {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
             <IconButton
