@@ -46,6 +46,13 @@ const pages = {
         url: '/future',
         icon: icons.AntDesignOutlined,
       },
+      {
+        id: 'cointype',
+        title: 'CoinType',
+        type: 'item',
+        url: '/cointype',
+        icon: icons.AntDesignOutlined,
+      },
     ]
 };
 

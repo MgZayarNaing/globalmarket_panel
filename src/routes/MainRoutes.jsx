@@ -11,6 +11,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 const UserList = Loadable(lazy(() => import('pages/users/UserList')));
 const ImageSlider = Loadable(lazy(() => import('pages/imageslider/ImageSlider')));
 const Future = Loadable(lazy(() => import('pages/future/Future')));
+const CoinType = Loadable(lazy(() => import('pages/cointype/CoinType')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -42,6 +43,10 @@ const MainRoutes = {
     {
       path: 'future',
       element: <Future />
+    },
+    {
+      path: 'cointype',
+      element: <CoinType />
     },
 
   ]

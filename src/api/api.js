@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'https://globalmarket.kanpetletfreedomfund.site/api';
-const API = 'https://globalmarket.kanpetletfreedomfund.site'
+const API = 'https://globalmarket.kanpetletfreedomfund.site';
 
 // const API_BASE_URL = 'http://localhost:8000/api';
 // const API = 'http://localhost:8000'
@@ -26,6 +26,12 @@ export const ENDPOINTS = {
     FUTURE_UPDATE: (pk) => `${API_BASE_URL}/futures/${pk}/update/`,
     FUTURE_DELETE: (pk) => `${API_BASE_URL}/futures/${pk}/delete/`,
     FUTURE_CREATE: `${API_BASE_URL}/futures/create/`,
+
+    COINTYPES: `${API_BASE_URL}/cointypes/`,
+    COINTYPE_DETAIL: (pk) => `${API_BASE_URL}/cointypes/${pk}/`,
+    COINTYPE_UPDATE: (pk) => `${API_BASE_URL}/cointypes/${pk}/update/`,
+    COINTYPE_DELETE: (pk) => `${API_BASE_URL}/cointypes/${pk}/delete/`,
+    COINTYPE_CREATE: `${API_BASE_URL}/cointypes/create/`,
 };
 
 export const login = async (credentials) => {
@@ -72,8 +78,6 @@ export const createUser = async (data) => {
     }
 };
 
-export { API_BASE_URL,API };
-
 export const searchUsers = async (params) => {
     try {
         const response = await api.get(ENDPOINTS.USERS, { params });
@@ -84,6 +88,45 @@ export const searchUsers = async (params) => {
     }
 };
 
+export const createCoinType = async (data) => {
+    try {
+        const response = await api.post(ENDPOINTS.COINTYPE_CREATE, data);
+        return response.data;
+    } catch (error) {
+        console.error('Create cointype error:', error);
+        throw error;
+    }
+};
+
+export const updateCoinType = async (pk, data) => {
+    try {
+        const response = await api.put(ENDPOINTS.COINTYPE_UPDATE(pk), data);
+        return response.data;
+    } catch (error) {
+        console.error('Update cointype error:', error);
+        throw error;
+    }
+};
+
+export const deleteCoinType = async (pk) => {
+    try {
+        const response = await api.delete(ENDPOINTS.COINTYPE_DELETE(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Delete cointype error:', error);
+        throw error;
+    }
+};
+
+export const getCoinTypeDetail = async (pk) => {
+    try {
+        const response = await api.get(ENDPOINTS.COINTYPE_DETAIL(pk));
+        return response.data;
+    } catch (error) {
+        console.error('Get cointype detail error:', error);
+        throw error;
+    }
+};
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -131,4 +174,4 @@ const handleLogout = () => {
     window.location.href = '/login';
 };
 
-export { api };
+export { api, API_BASE_URL, API };
