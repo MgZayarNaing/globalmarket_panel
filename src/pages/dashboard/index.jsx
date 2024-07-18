@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 
 // project import
-import MainCard from 'components/MainCard';
+
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
+import WeekChart from './WeekChart';
+
 
 // API import
 import { api, ENDPOINTS } from '../../api/api';
+import MonthChart from './MonthChat';
+import YearChart from './Year';
+
 
 const DashboardDefault = () => {
   const [totalUsers, setTotalUsers] = useState(0);
@@ -74,6 +79,18 @@ const DashboardDefault = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce title="Total Image Sliders" count={totalImageSliders} />
+      </Grid>
+      <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
+
+
+      <Grid item xs={12} md={6} lg={6}>
+        <WeekChart />
+      </Grid>
+      <Grid item xs={12} md={6} lg={6}>
+        <MonthChart />
+      </Grid>
+      <Grid item xs={12} md={12} lg={12}>
+        <YearChart />
       </Grid>
     </Grid>
   );
