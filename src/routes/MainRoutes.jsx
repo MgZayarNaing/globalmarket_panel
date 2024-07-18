@@ -70,10 +70,6 @@ const MainRoutes = {
       path: 'withdraw',
       element: <Withdraw />
     },
-    {
-      path: 'deposithistory',
-      element: <DepositHistory />
-    },
 
   ]
 };

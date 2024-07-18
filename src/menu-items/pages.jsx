@@ -81,13 +81,6 @@ const pages = {
         url: '/withdraw',
         icon: icons.AntDesignOutlined,
       },
-      {
-        id: 'deposithistory',
-        title: 'Deposit History',
-        type: 'item',
-        url: '/deposithistory',
-        icon: icons.AntDesignOutlined,
-      },
     ]
 };
 

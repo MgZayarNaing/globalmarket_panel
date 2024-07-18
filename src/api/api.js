@@ -57,11 +57,6 @@ export const ENDPOINTS = {
     WITHDRAW_DELETE: (pk) => `${API_BASE_URL}/withdraws/${pk}/delete/`,
     WITHDRAW_CREATE: `${API_BASE_URL}/withdraws/create/`,
 
-    DEPOSIT_HISTORIES: `${API_BASE_URL}/deposit-histories/`,
-    DEPOSIT_HISTORY_DETAIL: (pk) => `${API_BASE_URL}/deposit-histories/${pk}/`,
-    DEPOSIT_HISTORY_UPDATE: (pk) => `${API_BASE_URL}/deposit-histories/${pk}/update/`,
-    DEPOSIT_HISTORY_DELETE: (pk) => `${API_BASE_URL}/deposit-histories/${pk}/delete/`,
-    DEPOSIT_HISTORY_CREATE: `${API_BASE_URL}/deposit-histories/create/`,
 };
 
 export const login = async (credentials) => {
@@ -318,45 +313,6 @@ export const getWithdrawDetail = async (pk) => {
     }
 };
 
-export const createDepositHistory = async (data) => {
-    try {
-        const response = await api.post(ENDPOINTS.DEPOSIT_HISTORY_CREATE, data);
-        return response.data;
-    } catch (error) {
-        console.error('Create deposit history error:', error);
-        throw error;
-    }
-};
-
-export const updateDepositHistory = async (pk, data) => {
-    try {
-        const response = await api.put(ENDPOINTS.DEPOSIT_HISTORY_UPDATE(pk), data);
-        return response.data;
-    } catch (error) {
-        console.error('Update deposit history error:', error);
-        throw error;
-    }
-};
-
-export const deleteDepositHistory = async (pk) => {
-    try {
-        const response = await api.delete(ENDPOINTS.DEPOSIT_HISTORY_DELETE(pk));
-        return response.data;
-    } catch (error) {
-        console.error('Delete deposit history error:', error);
-        throw error;
-    }
-};
-
-export const getDepositHistoryDetail = async (pk) => {
-    try {
-        const response = await api.get(ENDPOINTS.DEPOSIT_HISTORY_DETAIL(pk));
-        return response.data;
-    } catch (error) {
-        console.error('Get deposit history detail error:', error);
-        throw error;
-    }
-};
 
 const api = axios.create({
     baseURL: API_BASE_URL,

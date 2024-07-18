@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { api, ENDPOINTS } from '../../api/api';
-import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl, Checkbox, FormControlLabel } from '@mui/material';
+import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useLocation } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useLocation } from 'react-router-dom';
 
 const DepositList = () => {
     const [deposits, setDeposits] = useState([]);
@@ -20,8 +20,7 @@ const DepositList = () => {
         customer: '',
         coin_type: '',
         network_type: '',
-        status: false,
-        fail_status: false,
+        status: 0,
         screenshot: null
     });
     const [customers, setCustomers] = useState([]);
@@ -90,15 +89,14 @@ const DepositList = () => {
             setFormValues({
                 id: selectedDeposit.id,
                 quantity: selectedDeposit.quantity,
-                customer: selectedDeposit.customer || '',
-                coin_type: selectedDeposit.coin_type || '',
-                network_type: selectedDeposit.network_type || '',
+                customer: selectedDeposit.customer.uuid || '',
+                coin_type: selectedDeposit.coin_type.id || '',
+                network_type: selectedDeposit.network_type.id || '',
                 status: selectedDeposit.status,
-                fail_status: selectedDeposit.fail_status,
                 screenshot: selectedDeposit.screenshot
             });
         }
-    }, [selectedDeposit]);
+    }, [selectedDeposit, customers, coinTypes, networkTypes]);
 
     if (loading) {
         return <Container><CircularProgress /></Container>;
@@ -131,11 +129,6 @@ const DepositList = () => {
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormValues({ ...formValues, [name]: value });
-    };
-
-    const handleCheckboxChange = (event) => {
-        const { name, checked } = event.target;
-        setFormValues({ ...formValues, [name]: checked });
     };
 
     const handleSelectChange = (event) => {
@@ -189,8 +182,7 @@ const DepositList = () => {
             customer: '',
             coin_type: '',
             network_type: '',
-            status: false,
-            fail_status: false,
+            status: 0,
             screenshot: null
         });
         setIsCreate(true);
@@ -212,6 +204,19 @@ const DepositList = () => {
         }
     };
 
+    const getStatusText = (status) => {
+        switch (status) {
+            case 0:
+                return <span style={{ color: 'grey' }}>Pending</span>;
+            case 1:
+                return <span style={{ color: 'green' }}>Successful</span>;
+            case 2:
+                return <span style={{ color: 'red' }}>Failed</span>;
+            default:
+                return '';
+        }
+    };
+
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'quantity', headerName: 'Quantity', width: 200 },
@@ -221,18 +226,8 @@ const DepositList = () => {
         {
             field: 'status',
             headerName: 'Status',
-            width: 100,
-            renderCell: (params) => (
-                params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'red' }} />
-            ),
-        },
-        {
-            field: 'fail_status',
-            headerName: 'Fail Status',
-            width: 100,
-            renderCell: (params) => (
-                params.value ? <CancelIcon style={{ color: 'red' }} /> : <CheckCircleIcon style={{ color: 'green' }} />
-            ),
+            width: 150,
+            renderCell: (params) => getStatusText(params.value),
         },
         { field: 'time', headerName: 'Time', width: 200 },
         {
@@ -260,11 +255,10 @@ const DepositList = () => {
     const rows = deposits.map((deposit) => ({
         id: deposit.id,
         quantity: deposit.quantity,
-        customer: deposit.customer,
-        coin_type: deposit.coin_type,
-        network_type: deposit.network_type,
+        customer: customers.find(customer => customer.uuid === deposit.customer)?.name || '',
+        coin_type: coinTypes.find(coinType => coinType.id === deposit.coin_type)?.type || '',
+        network_type: networkTypes.find(networkType => networkType.id === deposit.network_type)?.type || '',
         status: deposit.status,
-        fail_status: deposit.fail_status,
         time: deposit.time,
     }));
 
@@ -319,7 +313,7 @@ const DepositList = () => {
                                 labelId="customer-label"
                                 label="Customer"
                                 name="customer"
-                                value={formValues.customer || ''}
+                                value={formValues.customer}
                                 onChange={handleSelectChange}
                             >
                                 {customers.map((customer) => (
@@ -335,7 +329,7 @@ const DepositList = () => {
                                 labelId="coin-type-label"
                                 label="Coin Type"
                                 name="coin_type"
-                                value={formValues.coin_type || ''}
+                                value={formValues.coin_type}
                                 onChange={handleSelectChange}
                             >
                                 {coinTypes.map((coinType) => (
@@ -351,7 +345,7 @@ const DepositList = () => {
                                 labelId="network-type-label"
                                 label="Network Type"
                                 name="network_type"
-                                value={formValues.network_type || ''}
+                                value={formValues.network_type}
                                 onChange={handleSelectChange}
                             >
                                 {networkTypes.map((networkType) => (
@@ -361,26 +355,20 @@ const DepositList = () => {
                                 ))}
                             </Select>
                         </FormControl>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={formValues.status}
-                                    onChange={handleCheckboxChange}
-                                    name="status"
-                                />
-                            }
-                            label="Status"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={formValues.fail_status}
-                                    onChange={handleCheckboxChange}
-                                    name="fail_status"
-                                />
-                            }
-                            label="Fail Status"
-                        />
+                        <FormControl fullWidth margin="dense" variant="outlined">
+                            <InputLabel id="status-label">Status</InputLabel>
+                            <Select
+                                labelId="status-label"
+                                label="Status"
+                                name="status"
+                                value={formValues.status}
+                                onChange={handleSelectChange}
+                            >
+                                <MenuItem value={0}>Pending</MenuItem>
+                                <MenuItem value={1}>Successful</MenuItem>
+                                <MenuItem value={2}>Failed</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Box>
                 </DialogContent>
                 <DialogActions>
