@@ -24,7 +24,7 @@ export default function HeaderContent() {
 
     return (
         <>
-           {location.pathname == "/dashboard/default" && <> </>}
+           {location.pathname === "/dashboard/default" && <> </>}
            {location.pathname === "/userslist" && <Search />}
            {location.pathname === "/imageslider" && <Search />}
            {location.pathname === "/future" && <Search />}
