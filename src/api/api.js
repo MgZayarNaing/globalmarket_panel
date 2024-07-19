@@ -343,11 +343,15 @@ api.interceptors.response.use(
                     axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
                     originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
                     return axios(originalRequest);
+                } else {
+                    handleLogout();
                 }
             } catch (refreshError) {
                 console.error('Refresh token error:', refreshError);
                 handleLogout();
             }
+        } else if (!localStorage.getItem('accessToken')) {
+            handleLogout();
         }
         return Promise.reject(error);
     }

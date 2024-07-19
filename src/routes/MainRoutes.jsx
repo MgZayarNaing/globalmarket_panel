@@ -46,10 +46,6 @@ const MainRoutes = {
       element: <ImageSlider />
     },
     {
-      path: 'future',
-      element: <Future />
-    },
-    {
       path: 'cointype',
       element: <CoinType />
     },

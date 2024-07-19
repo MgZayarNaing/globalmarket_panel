@@ -28,8 +28,6 @@ const Search = () => {
         navigate(`/userslist?search=${newSearchTerm}`);
       } else if (location.pathname === '/imageslider') {
         navigate(`/imageslider?search=${newSearchTerm}`);
-      }else if (location.pathname === '/future') {
-        navigate(`/future?search=${newSearchTerm}`);
       }else if (location.pathname === '/cointype') {
         navigate(`/cointype?search=${newSearchTerm}`);
       }else if (location.pathname === '/networks') {

@@ -27,7 +27,6 @@ export default function HeaderContent() {
            {location.pathname === "/dashboard/default" && <> </>}
            {location.pathname === "/userslist" && <Search />}
            {location.pathname === "/imageslider" && <Search />}
-           {location.pathname === "/future" && <Search />}
            {location.pathname === "/cointype" && <Search />}
            {location.pathname === "/networks" && <Search />}
            {location.pathname === "/coin" && <Search />}

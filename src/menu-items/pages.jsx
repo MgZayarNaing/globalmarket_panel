@@ -40,13 +40,6 @@ const pages = {
         icon: icons.AntDesignOutlined,
       },
       {
-        id: 'future',
-        title: 'Future',
-        type: 'item',
-        url: '/future',
-        icon: icons.AntDesignOutlined,
-      },
-      {
         id: 'cointype',
         title: 'CoinType',
         type: 'item',
