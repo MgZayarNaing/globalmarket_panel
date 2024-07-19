@@ -10,7 +10,6 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 // render - sample page
 const UserList = Loadable(lazy(() => import('pages/users/UserList')));
 const ImageSlider = Loadable(lazy(() => import('pages/imageslider/ImageSlider')));
-const Future = Loadable(lazy(() => import('pages/future/Future')));
 const CoinType = Loadable(lazy(() => import('pages/cointype/CoinType')));
 const Networks = Loadable(lazy(() => import('pages/networks/Networks')));
 const Coin = Loadable(lazy(() => import('pages/coin/Coin')));
