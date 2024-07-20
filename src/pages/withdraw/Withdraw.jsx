@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { api, ENDPOINTS } from '../../api/api';
-import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl, Checkbox, FormControlLabel } from '@mui/material';
+import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useLocation } from 'react-router-dom';
 
@@ -30,6 +30,7 @@ const WithdrawList = () => {
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const [selectionModel, setSelectionModel] = useState([]);
+    const [dataLoaded, setDataLoaded] = useState(false); // New state for data loading
 
     const location = useLocation();
 
@@ -95,7 +96,7 @@ const WithdrawList = () => {
         fetchWithdraws(searchQuery, page, pageSize);
         fetchCustomers();
         fetchCoinTypes();
-        fetchNetworkTypes();
+        fetchNetworkTypes().then(() => setDataLoaded(true)); // Mark data as loaded
     }, [location.search, page, pageSize]);
 
     useEffect(() => {
@@ -103,14 +104,14 @@ const WithdrawList = () => {
             setFormValues({
                 id: selectedWithdraw.id,
                 quantity: selectedWithdraw.quantity,
-                customer: selectedWithdraw.customer || '',
-                coin_type: selectedWithdraw.coin_type || '',
-                network_type: selectedWithdraw.network_type || '',
+                customer: selectedWithdraw.customer,
+                coin_type: coinTypes.find(coinType => coinType.id === selectedWithdraw.coin_type)?.id || selectedWithdraw.coin_type || '',
+                network_type: networkTypes.find(networkType => networkType.id === selectedWithdraw.network_type)?.id || selectedWithdraw.network_type || '',
                 user_link_address: selectedWithdraw.user_link_address || '',
                 status: selectedWithdraw.status,
             });
         }
-    }, [selectedWithdraw]);
+    }, [selectedWithdraw, coinTypes, networkTypes]);
 
     if (loading) {
         return <Container><CircularProgress /></Container>;
@@ -143,11 +144,6 @@ const WithdrawList = () => {
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormValues({ ...formValues, [name]: value });
-    };
-
-    const handleCheckboxChange = (event) => {
-        const { name, checked } = event.target;
-        setFormValues({ ...formValues, [name]: checked });
     };
 
     const handleSelectChange = (event) => {
@@ -307,100 +303,106 @@ const WithdrawList = () => {
 
             <Dialog open={openModal} onClose={handleCloseModal}>
                 <DialogTitle>{isCreate ? 'Create Withdraw' : 'Withdraw Details'}</DialogTitle>
-                <DialogContent>
-                    <Box component="form" noValidate autoComplete="off">
-                        {!isCreate && (
+                {dataLoaded ? ( // Only render form when data is loaded
+                    <DialogContent>
+                        <Box component="form" noValidate autoComplete="off">
+                            {!isCreate && (
+                                <TextField
+                                    margin="dense"
+                                    label="ID"
+                                    fullWidth
+                                    variant="outlined"
+                                    value={formValues.id}
+                                    disabled
+                                />
+                            )}
                             <TextField
                                 margin="dense"
-                                label="ID"
+                                label="Quantity"
                                 fullWidth
                                 variant="outlined"
-                                value={formValues.id}
-                                disabled
+                                name="quantity"
+                                value={formValues.quantity}
+                                onChange={handleInputChange}
                             />
-                        )}
-                        <TextField
-                            margin="dense"
-                            label="Quantity"
-                            fullWidth
-                            variant="outlined"
-                            name="quantity"
-                            value={formValues.quantity}
-                            onChange={handleInputChange}
-                        />
-                        <FormControl fullWidth margin="dense" variant="outlined">
-                            <InputLabel id="customer-label">Customer</InputLabel>
-                            <Select
-                                labelId="customer-label"
-                                label="Customer"
-                                name="customer"
-                                value={formValues.customer || ''}
-                                onChange={handleSelectChange}
-                            >
-                                {customers.map((customer) => (
-                                    <MenuItem key={customer.uuid} value={customer.uuid}>
-                                        {customer.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl fullWidth margin="dense" variant="outlined">
-                            <InputLabel id="coin-type-label">Coin Type</InputLabel>
-                            <Select
-                                labelId="coin-type-label"
-                                label="Coin Type"
-                                name="coin_type"
-                                value={formValues.coin_type || ''}
-                                onChange={handleSelectChange}
-                            >
-                                {coinTypes.map((coinType) => (
-                                    <MenuItem key={coinType.id} value={coinType.id}>
-                                        {coinType.type}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl fullWidth margin="dense" variant="outlined">
-                            <InputLabel id="network-type-label">Network Type</InputLabel>
-                            <Select
-                                labelId="network-type-label"
-                                label="Network Type"
-                                name="network_type"
-                                value={formValues.network_type || ''}
-                                onChange={handleSelectChange}
-                            >
-                                {networkTypes.map((networkType) => (
-                                    <MenuItem key={networkType.id} value={networkType.id}>
-                                        {networkType.type}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <TextField
-                            margin="dense"
-                            label="User Link Address"
-                            fullWidth
-                            variant="outlined"
-                            name="user_link_address"
-                            value={formValues.user_link_address}
-                            onChange={handleInputChange}
-                        />
-                        <FormControl fullWidth margin="dense" variant="outlined">
-                            <InputLabel id="status-label">Status</InputLabel>
-                            <Select
-                                labelId="status-label"
-                                label="Status"
-                                name="status"
-                                value={formValues.status}
-                                onChange={handleSelectChange}
-                            >
-                                <MenuItem value={0}>Pending</MenuItem>
-                                <MenuItem value={1}>Successful</MenuItem>
-                                <MenuItem value={2}>Failed</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                </DialogContent>
+                            <FormControl fullWidth margin="dense" variant="outlined">
+                                <InputLabel id="customer-label">Customer</InputLabel>
+                                <Select
+                                    labelId="customer-label"
+                                    label="Customer"
+                                    name="customer"
+                                    value={formValues.customer.uuid || formValues.customer}
+                                    onChange={handleSelectChange}
+                                >
+                                    {customers.map((customer) => (
+                                        <MenuItem key={customer.uuid} value={customer.uuid}>
+                                            {customer.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth margin="dense" variant="outlined">
+                                <InputLabel id="coin-type-label">Coin Type</InputLabel>
+                                <Select
+                                    labelId="coin-type-label"
+                                    label="Coin Type"
+                                    name="coin_type"
+                                    value={formValues.coin_type || ''}
+                                    onChange={handleSelectChange}
+                                >
+                                    {coinTypes.map((coinType) => (
+                                        <MenuItem key={coinType.id} value={coinType.id}>
+                                            {coinType.type}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth margin="dense" variant="outlined">
+                                <InputLabel id="network-type-label">Network Type</InputLabel>
+                                <Select
+                                    labelId="network-type-label"
+                                    label="Network Type"
+                                    name="network_type"
+                                    value={formValues.network_type || ''}
+                                    onChange={handleSelectChange}
+                                >
+                                    {networkTypes.map((networkType) => (
+                                        <MenuItem key={networkType.id} value={networkType.id}>
+                                            {networkType.type}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <TextField
+                                margin="dense"
+                                label="User Link Address"
+                                fullWidth
+                                variant="outlined"
+                                name="user_link_address"
+                                value={formValues.user_link_address}
+                                onChange={handleInputChange}
+                            />
+                            <FormControl fullWidth margin="dense" variant="outlined">
+                                <InputLabel id="status-label">Status</InputLabel>
+                                <Select
+                                    labelId="status-label"
+                                    label="Status"
+                                    name="status"
+                                    value={formValues.status}
+                                    onChange={handleSelectChange}
+                                >
+                                    <MenuItem value={0}>Pending</MenuItem>
+                                    <MenuItem value={1}>Successful</MenuItem>
+                                    <MenuItem value={2}>Failed</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                    </DialogContent>
+                ) : (
+                    <DialogContent>
+                        <CircularProgress />
+                    </DialogContent>
+                )}
                 <DialogActions>
                     <Button onClick={handleCloseModal} color="primary">Close</Button>
                     {isCreate ? (

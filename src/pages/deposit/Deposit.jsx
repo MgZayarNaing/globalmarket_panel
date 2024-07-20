@@ -4,8 +4,6 @@ import { api, ENDPOINTS } from '../../api/api';
 import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useLocation } from 'react-router-dom';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 const DepositList = () => {
     const [deposits, setDeposits] = useState([]);
@@ -89,14 +87,14 @@ const DepositList = () => {
             setFormValues({
                 id: selectedDeposit.id,
                 quantity: selectedDeposit.quantity,
-                customer: selectedDeposit.customer.uuid || '',
-                coin_type: selectedDeposit.coin_type.id || '',
-                network_type: selectedDeposit.network_type.id || '',
+                customer: selectedDeposit.customer,
+                coin_type: selectedDeposit.coin_type,
+                network_type: selectedDeposit.network_type,
                 status: selectedDeposit.status,
                 screenshot: selectedDeposit.screenshot
             });
         }
-    }, [selectedDeposit, customers, coinTypes, networkTypes]);
+    }, [selectedDeposit]);
 
     if (loading) {
         return <Container><CircularProgress /></Container>;
@@ -116,7 +114,13 @@ const DepositList = () => {
         setAnchorEl(null);
     };
 
-    const handleDetailClick = () => {
+    const handleDetailClick = (id) => {
+        deposits.forEach((deposit) => {
+            if (deposit.id === id) {
+                setSelectedDeposit(deposit);
+            }
+        });
+
         setOpenModal(true);
         handleMenuClose();
     };
@@ -244,7 +248,7 @@ const DepositList = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                     >
-                        <MenuItem onClick={handleDetailClick}>Detail</MenuItem>
+                        <MenuItem onClick={() => handleDetailClick(params.row.id)}>Detail</MenuItem>
                         <MenuItem onClick={() => handleDeleteDeposit(params.row.id)}>Delete</MenuItem>
                     </Menu>
                 </div>
@@ -313,7 +317,7 @@ const DepositList = () => {
                                 labelId="customer-label"
                                 label="Customer"
                                 name="customer"
-                                value={formValues.customer}
+                                value={formValues.customer.uuid || formValues.customer}
                                 onChange={handleSelectChange}
                             >
                                 {customers.map((customer) => (
@@ -329,7 +333,7 @@ const DepositList = () => {
                                 labelId="coin-type-label"
                                 label="Coin Type"
                                 name="coin_type"
-                                value={formValues.coin_type}
+                                value={formValues.coin_type.id || formValues.coin_type}
                                 onChange={handleSelectChange}
                             >
                                 {coinTypes.map((coinType) => (
@@ -345,7 +349,7 @@ const DepositList = () => {
                                 labelId="network-type-label"
                                 label="Network Type"
                                 name="network_type"
-                                value={formValues.network_type}
+                                value={formValues.network_type.id || formValues.network_type}
                                 onChange={handleSelectChange}
                             >
                                 {networkTypes.map((networkType) => (
