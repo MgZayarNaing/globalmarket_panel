@@ -84,6 +84,7 @@ const DepositList = () => {
 
     useEffect(() => {
         if (selectedDeposit) {
+            console.log(selectedDeposit)
             setFormValues({
                 id: selectedDeposit.id,
                 quantity: selectedDeposit.quantity,

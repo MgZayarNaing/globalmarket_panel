@@ -47,9 +47,9 @@ const WithdrawList = () => {
                     const networkTypeResponse = await api.get(ENDPOINTS.NETWORK_DETAIL(withdraw.network_type));
                     return {
                         ...withdraw,
-                        customer_name: customerResponse.data.name,
-                        coin_type_name: coinTypeResponse.data.type,
-                        network_type_name: networkTypeResponse.data.type,
+                        customer_name: customerResponse.data.uuid,
+                        coin_type_name: coinTypeResponse.data.id,
+                        network_type_name: networkTypeResponse.data.id,
                     };
                 })
             );
@@ -101,12 +101,13 @@ const WithdrawList = () => {
 
     useEffect(() => {
         if (selectedWithdraw) {
+            console.log(selectedWithdraw)
             setFormValues({
                 id: selectedWithdraw.id,
                 quantity: selectedWithdraw.quantity,
-                customer: selectedWithdraw.customer,
-                coin_type: coinTypes.find(coinType => coinType.id === selectedWithdraw.coin_type)?.id || selectedWithdraw.coin_type || '',
-                network_type: networkTypes.find(networkType => networkType.id === selectedWithdraw.network_type)?.id || selectedWithdraw.network_type || '',
+                customer: selectedWithdraw.customer_name,
+                coin_type: selectedWithdraw.coin_type_name,
+                network_type: selectedWithdraw.network_type_name,
                 user_link_address: selectedWithdraw.user_link_address || '',
                 status: selectedWithdraw.status,
             });
