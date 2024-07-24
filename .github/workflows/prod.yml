@@ -39,6 +39,6 @@ jobs:
           # ARGS: "-rltgoDzvO --delete"
           SOURCE: 'dist/'
           REMOTE_HOST: 192.34.62.123
-          REMOTE_USER: mantis
+          REMOTE_USER: globalmarket
           TARGET: public_html/
           EXCLUDE: '/build/, /node_modules/'

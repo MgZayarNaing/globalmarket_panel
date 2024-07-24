@@ -1,12 +1,12 @@
 {
-  "name": "mantis-free-react-admin-template",
+  "name": "global-market",
   "version": "1.3.0",
   "private": true,
-  "homepage": "https://mantisdashboard.io/free",
+  "homepage": "#",
   "author": {
-    "name": "CodedThemes",
-    "email": "codedthemes@gmail.com",
-    "url": "https://codedthemes.com/"
+    "name": "GlobalMarket",
+    "email": "admin@globalmarket.com",
+    "url": "https://globalmarket.com/"
   },
   "scripts": {
     "start": "vite",
