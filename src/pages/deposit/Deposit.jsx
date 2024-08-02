@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { api, ENDPOINTS } from '../../api/api';
-import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl } from '@mui/material';
+import { api, ENDPOINTS, API } from '../../api/api';
+import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, Select, InputLabel, FormControl, CardMedia } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useLocation } from 'react-router-dom';
+
 
 const DepositList = () => {
     const [deposits, setDeposits] = useState([]);
@@ -84,7 +85,6 @@ const DepositList = () => {
 
     useEffect(() => {
         if (selectedDeposit) {
-            console.log(selectedDeposit)
             setFormValues({
                 id: selectedDeposit.id,
                 quantity: selectedDeposit.quantity,
@@ -144,9 +144,27 @@ const DepositList = () => {
         }));
     };
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        setFormValues({ ...formValues, screenshot: file });
+    };
+
     const handleUpdateDeposit = async () => {
         try {
-            await api.put(ENDPOINTS.DEPOSIT_UPDATE(formValues.id), formValues);
+            const formData = new FormData();
+            Object.keys(formValues).forEach(key => {
+                if (key === 'screenshot' && typeof formValues[key] === 'string') {
+                    // Skip appending the screenshot if it's a URL
+                    return;
+                }
+                formData.append(key, formValues[key]);
+            });
+
+            await api.put(ENDPOINTS.DEPOSIT_UPDATE(formValues.id), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             setOpenModal(false);
             fetchDeposits();
             setSnackbar({ open: true, message: 'Deposit updated successfully', severity: 'success' });
@@ -170,7 +188,16 @@ const DepositList = () => {
 
     const handleCreateDeposit = async () => {
         try {
-            await api.post(ENDPOINTS.DEPOSIT_CREATE, formValues);
+            const formData = new FormData();
+            Object.keys(formValues).forEach(key => {
+                formData.append(key, formValues[key]);
+            });
+
+            await api.post(ENDPOINTS.DEPOSIT_CREATE, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             setOpenModal(false);
             fetchDeposits();
             setSnackbar({ open: true, message: 'Deposit created successfully', severity: 'success' });
@@ -236,6 +263,14 @@ const DepositList = () => {
         },
         { field: 'time', headerName: 'Time', width: 200 },
         {
+            field: 'screenshot',
+            headerName: 'Screenshot',
+            width: 200,
+            renderCell: (params) => (
+                params.value ? <img src={`${API}${params.value}`} alt="screenshot" style={{ width: '100%', height: 'auto' }} /> : 'No Screenshot'
+            ),
+        },
+        {
             field: 'actions',
             headerName: 'Actions',
             width: 100,
@@ -265,6 +300,7 @@ const DepositList = () => {
         network_type: networkTypes.find(networkType => networkType.id === deposit.network_type)?.type || '',
         status: deposit.status,
         time: deposit.time,
+        screenshot: deposit.screenshot,
     }));
 
     return (
@@ -374,6 +410,27 @@ const DepositList = () => {
                                 <MenuItem value={2}>Failed</MenuItem>
                             </Select>
                         </FormControl>
+                        <input
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id="raised-button-file"
+                            type="file"
+                            onChange={handleFileChange}
+                        />
+                        <label htmlFor="raised-button-file">
+                            <Button variant="contained" component="span">
+                                Upload Screenshot
+                            </Button>
+                        </label>
+                        {formValues.screenshot && (
+                            <CardMedia
+                                component="img"
+                                height="140"
+                                image={formValues.screenshot instanceof File ? URL.createObjectURL(formValues.screenshot) : `${API}${formValues.screenshot}`}
+                                alt="Screenshot"
+                                style={{ marginTop: 16 }}
+                            />
+                        )}
                     </Box>
                 </DialogContent>
                 <DialogActions>
