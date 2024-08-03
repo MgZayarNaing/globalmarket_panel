@@ -50,6 +50,7 @@ export const ENDPOINTS = {
     DEPOSIT_UPDATE: (pk) => `${API_BASE_URL}/deposits/${pk}/update/`,
     DEPOSIT_DELETE: (pk) => `${API_BASE_URL}/deposits/${pk}/delete/`,
     DEPOSIT_CREATE: `${API_BASE_URL}/deposits/create/`,
+    DEPOSIT_SUCCESS: (pk) => `${API_BASE_URL}/deposits/${pk}/success/`,
 
     WITHDRAWS: `${API_BASE_URL}/withdraws/`,
     WITHDRAW_DETAIL: (pk) => `${API_BASE_URL}/withdraws/${pk}/`,

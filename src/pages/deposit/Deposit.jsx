@@ -150,6 +150,13 @@ const DepositList = () => {
     };
 
     const handleUpdateDeposit = async () => {
+       if(formValues.status == 1){
+         SuccessfulStatus(formValues.id)
+         console.log(formValues.id)
+       }
+    //    if(formValues.status == 2){
+    //     FailedStatus(formValues.id)
+    //    }
         try {
             const formData = new FormData();
             Object.keys(formValues).forEach(key => {
@@ -173,6 +180,15 @@ const DepositList = () => {
             setSnackbar({ open: true, message: 'Failed to update Deposit', severity: 'error' });
         }
     };
+
+    const SuccessfulStatus = (id) =>{
+       fetch(ENDPOINTS.DEPOSIT_SUCCESS(id),{headers: {
+        'Content-Type': 'multipart/form-data',
+    },})
+       .then(console.log("ok"))
+       .catch(error => console.log(error))
+    }
+
 
     const handleDeleteDeposit = async (id) => {
         try {
@@ -404,6 +420,7 @@ const DepositList = () => {
                                 name="status"
                                 value={formValues.status}
                                 onChange={handleSelectChange}
+                                disabled={formValues.status != 0}
                             >
                                 <MenuItem value={0}>Pending</MenuItem>
                                 <MenuItem value={1}>Successful</MenuItem>
