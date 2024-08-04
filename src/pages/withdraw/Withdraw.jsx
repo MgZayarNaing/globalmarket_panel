@@ -30,7 +30,7 @@ const WithdrawList = () => {
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const [selectionModel, setSelectionModel] = useState([]);
-    const [dataLoaded, setDataLoaded] = useState(false); // New state for data loading
+    const [dataLoaded, setDataLoaded] = useState(false);
 
     const location = useLocation();
 
@@ -96,12 +96,11 @@ const WithdrawList = () => {
         fetchWithdraws(searchQuery, page, pageSize);
         fetchCustomers();
         fetchCoinTypes();
-        fetchNetworkTypes().then(() => setDataLoaded(true)); // Mark data as loaded
+        fetchNetworkTypes().then(() => setDataLoaded(true));
     }, [location.search, page, pageSize]);
 
     useEffect(() => {
         if (selectedWithdraw) {
-            console.log(selectedWithdraw)
             setFormValues({
                 id: selectedWithdraw.id,
                 quantity: selectedWithdraw.quantity,
@@ -304,7 +303,7 @@ const WithdrawList = () => {
 
             <Dialog open={openModal} onClose={handleCloseModal}>
                 <DialogTitle>{isCreate ? 'Create Withdraw' : 'Withdraw Details'}</DialogTitle>
-                {dataLoaded ? ( // Only render form when data is loaded
+                {dataLoaded ? (
                     <DialogContent>
                         <Box component="form" noValidate autoComplete="off">
                             {!isCreate && (
@@ -332,7 +331,7 @@ const WithdrawList = () => {
                                     labelId="customer-label"
                                     label="Customer"
                                     name="customer"
-                                    value={formValues.customer.uuid || formValues.customer}
+                                    value={formValues.customer}
                                     onChange={handleSelectChange}
                                 >
                                     {customers.map((customer) => (
