@@ -288,7 +288,7 @@ const DepositList = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                     >
-                        <MenuItem onClick={handleDetailClick}>Detail</MenuItem>
+                        <MenuItem onClick={() => handleDetailClick(params.row.id)}>Detail</MenuItem>
                         <MenuItem onClick={() => handleDeleteDeposit(params.row.id)}>Delete</MenuItem>
                     </Menu>
                 </div>
@@ -299,9 +299,9 @@ const DepositList = () => {
     const rows = deposits.map((deposit) => ({
         id: deposit.id,
         quantity: deposit.quantity,
-        customer: customers.find(customer => customer.uuid === deposit.customer)?.name || '',
-        coin_type: coinTypes.find(coinType => coinType.id === deposit.coin_type)?.type || '',
-        network_type: networkTypes.find(networkType => networkType.id === deposit.network_type)?.type || '',
+        customer: customers.find(customer => customer.uuid === deposit.customer)?.uuid || '',
+        coin_type: coinTypes.find(coinType => coinType.id === deposit.coin_type)?.id || '',
+        network_type: networkTypes.find(networkType => networkType.id === deposit.network_type)?.id || '',
         status: deposit.status,
         time: deposit.time,
         screenshot: deposit.screenshot,
