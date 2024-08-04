@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://globalmarket.kanpetletfreedomfund.site/api';
-const API = 'https://globalmarket.kanpetletfreedomfund.site';
+// const API_BASE_URL = 'https://globalmarket.kanpetletfreedomfund.site/api';
+// const API = 'https://globalmarket.kanpetletfreedomfund.site';
 
-// const API_BASE_URL = 'http://localhost:8000/api';
-// const API = 'http://localhost:8000'
+const API_BASE_URL = 'http://localhost:8000/api';
+const API = 'http://localhost:8000'
 
 export const ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/login/`,
@@ -57,6 +57,9 @@ export const ENDPOINTS = {
     WITHDRAW_UPDATE: (pk) => `${API_BASE_URL}/withdraws/${pk}/update/`,
     WITHDRAW_DELETE: (pk) => `${API_BASE_URL}/withdraws/${pk}/delete/`,
     WITHDRAW_CREATE: `${API_BASE_URL}/withdraws/create/`,
+
+    UC_Create: `${API_BASE_URL}/userchoices/create/`,
+    UC_List: (uuid) => `${API_BASE_URL}/userchoices/${uuid}/`,
 
 };
 

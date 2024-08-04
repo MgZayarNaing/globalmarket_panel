@@ -5,7 +5,6 @@ import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, Dialog
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useLocation } from 'react-router-dom';
 
-
 const DepositList = () => {
     const [deposits, setDeposits] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,7 +13,6 @@ const DepositList = () => {
     const [selectedDeposit, setSelectedDeposit] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [formValues, setFormValues] = useState({
-        id: '',
         quantity: '',
         customer: '',
         coin_type: '',
@@ -115,13 +113,7 @@ const DepositList = () => {
         setAnchorEl(null);
     };
 
-    const handleDetailClick = (id) => {
-        deposits.forEach((deposit) => {
-            if (deposit.id === id) {
-                setSelectedDeposit(deposit);
-            }
-        });
-
+    const handleDetailClick = () => {
         setOpenModal(true);
         handleMenuClose();
     };
@@ -150,18 +142,13 @@ const DepositList = () => {
     };
 
     const handleUpdateDeposit = async () => {
-       if(formValues.status == 1){
-         SuccessfulStatus(formValues.id)
-         console.log(formValues.id)
-       }
-    //    if(formValues.status == 2){
-    //     FailedStatus(formValues.id)
-    //    }
+        if (formValues.status === 1) {
+            SuccessfulStatus(formValues.id);
+        }
         try {
             const formData = new FormData();
             Object.keys(formValues).forEach(key => {
                 if (key === 'screenshot' && typeof formValues[key] === 'string') {
-                    // Skip appending the screenshot if it's a URL
                     return;
                 }
                 formData.append(key, formValues[key]);
@@ -181,14 +168,15 @@ const DepositList = () => {
         }
     };
 
-    const SuccessfulStatus = (id) =>{
-       fetch(ENDPOINTS.DEPOSIT_SUCCESS(id),{headers: {
-        'Content-Type': 'multipart/form-data',
-    },})
-       .then(console.log("ok"))
-       .catch(error => console.log(error))
-    }
-
+    const SuccessfulStatus = (id) => {
+        fetch(ENDPOINTS.DEPOSIT_SUCCESS(id), {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(() => console.log("ok"))
+            .catch(error => console.log(error));
+    };
 
     const handleDeleteDeposit = async (id) => {
         try {
@@ -206,6 +194,7 @@ const DepositList = () => {
         try {
             const formData = new FormData();
             Object.keys(formValues).forEach(key => {
+                if (key === 'id') return; // Skip appending id when creating
                 formData.append(key, formValues[key]);
             });
 
@@ -225,7 +214,6 @@ const DepositList = () => {
 
     const handleOpenCreateModal = () => {
         setFormValues({
-            id: '',
             quantity: '',
             customer: '',
             coin_type: '',
@@ -300,7 +288,7 @@ const DepositList = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                     >
-                        <MenuItem onClick={() => handleDetailClick(params.row.id)}>Detail</MenuItem>
+                        <MenuItem onClick={handleDetailClick}>Detail</MenuItem>
                         <MenuItem onClick={() => handleDeleteDeposit(params.row.id)}>Delete</MenuItem>
                     </Menu>
                 </div>
@@ -370,7 +358,7 @@ const DepositList = () => {
                                 labelId="customer-label"
                                 label="Customer"
                                 name="customer"
-                                value={formValues.customer.uuid || formValues.customer}
+                                value={formValues.customer}
                                 onChange={handleSelectChange}
                             >
                                 {customers.map((customer) => (
@@ -386,7 +374,7 @@ const DepositList = () => {
                                 labelId="coin-type-label"
                                 label="Coin Type"
                                 name="coin_type"
-                                value={formValues.coin_type.id || formValues.coin_type}
+                                value={formValues.coin_type}
                                 onChange={handleSelectChange}
                             >
                                 {coinTypes.map((coinType) => (
@@ -402,7 +390,7 @@ const DepositList = () => {
                                 labelId="network-type-label"
                                 label="Network Type"
                                 name="network_type"
-                                value={formValues.network_type.id || formValues.network_type}
+                                value={formValues.network_type}
                                 onChange={handleSelectChange}
                             >
                                 {networkTypes.map((networkType) => (
@@ -420,7 +408,7 @@ const DepositList = () => {
                                 name="status"
                                 value={formValues.status}
                                 onChange={handleSelectChange}
-                                disabled={formValues.status != 0}
+                                disabled={formValues.status !== 0}
                             >
                                 <MenuItem value={0}>Pending</MenuItem>
                                 <MenuItem value={1}>Successful</MenuItem>
