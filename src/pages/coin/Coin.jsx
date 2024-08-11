@@ -35,7 +35,7 @@ const CoinList = () => {
         try {
             setLoading(true);
             const response = await api.get(`${ENDPOINTS.COINS}?search=${searchQuery}&page=${page}&page_size=${pageSize}`);
-            setCoins(response.data.results || []);
+            setCoins(response.data || []);
             setTotalCount(response.data.count || 0);
             setLoading(false);
         } catch (error) {
@@ -47,8 +47,8 @@ const CoinList = () => {
     const fetchCustomers = async () => {
         try {
             const response = await api.get(ENDPOINTS.USERS);
-            console.log('Fetched Customers:', response.data.results);
-            setCustomers(response.data.results || []);
+            console.log('Fetched Customers:', response.data);
+            setCustomers(response.data || []);
         } catch (error) {
             console.error('Fetch customers error:', error);
         }
@@ -57,8 +57,8 @@ const CoinList = () => {
     const fetchCoinTypes = async () => {
         try {
             const response = await api.get(ENDPOINTS.COINTYPES);
-            console.log('Fetched Coin Types:', response.data.results);
-            setCoinTypes(response.data.results || []);
+            console.log('Fetched Coin Types:', response.data);
+            setCoinTypes(response.data || []);
         } catch (error) {
             console.error('Fetch coin types error:', error);
         }
@@ -67,8 +67,8 @@ const CoinList = () => {
     const fetchNetworkTypes = async () => {
         try {
             const response = await api.get(ENDPOINTS.NETWORKS);
-            console.log('Fetched Network Types:', response.data.results);
-            setNetworkTypes(response.data.results || []);
+            console.log('Fetched Network Types:', response.data);
+            setNetworkTypes(response.data || []);
         } catch (error) {
             console.error('Fetch network types error:', error);
         }

@@ -29,7 +29,7 @@ const CoinTypeList = () => {
         try {
             setLoading(true);
             const response = await api.get(`${ENDPOINTS.COINTYPES}?search=${searchQuery}&page=${page}&page_size=${pageSize}`);
-            setCointypes(response.data.results || []);
+            setCointypes(response.data || []);
             setTotalCount(response.data.count || 0);
             setLoading(false);
         } catch (error) {

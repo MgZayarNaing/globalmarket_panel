@@ -38,7 +38,7 @@ const WithdrawList = () => {
         try {
             setLoading(true);
             const response = await api.get(`${ENDPOINTS.WITHDRAWS}?search=${searchQuery}&page=${page}&page_size=${pageSize}`);
-            const withdrawsData = response.data.results || [];
+            const withdrawsData = response.data || [];
 
             const enrichedWithdraws = await Promise.all(
                 withdrawsData.map(async (withdraw) => {
@@ -66,7 +66,7 @@ const WithdrawList = () => {
     const fetchCustomers = async () => {
         try {
             const response = await api.get(ENDPOINTS.USERS);
-            setCustomers(response.data.results || []);
+            setCustomers(response.data || []);
         } catch (error) {
             console.error('Fetch customers error:', error);
         }
@@ -75,7 +75,7 @@ const WithdrawList = () => {
     const fetchCoinTypes = async () => {
         try {
             const response = await api.get(ENDPOINTS.COINTYPES);
-            setCoinTypes(response.data.results || []);
+            setCoinTypes(response.data || []);
         } catch (error) {
             console.error('Fetch coin types error:', error);
         }
@@ -84,7 +84,7 @@ const WithdrawList = () => {
     const fetchNetworkTypes = async () => {
         try {
             const response = await api.get(ENDPOINTS.NETWORKS);
-            setNetworkTypes(response.data.results || []);
+            setNetworkTypes(response.data || []);
         } catch (error) {
             console.error('Fetch network types error:', error);
         }

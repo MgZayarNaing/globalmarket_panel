@@ -33,8 +33,8 @@ const WeekChart = () => {
           api.get(ENDPOINTS.WITHDRAWS)
         ]);
 
-        const depositsData = aggregateDataByWeek(depositResponse.data.results);
-        const withdrawsData = aggregateDataByWeek(withdrawResponse.data.results);
+        const depositsData = aggregateDataByWeek(depositResponse.data);
+        const withdrawsData = aggregateDataByWeek(withdrawResponse.data);
 
         setSeries([
           {

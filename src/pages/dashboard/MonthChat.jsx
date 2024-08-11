@@ -49,8 +49,8 @@ const MonthChart = () => {
           api.get(ENDPOINTS.WITHDRAWS)
         ]);
 
-        const depositsData = aggregateDataByMonth(depositResponse.data.results);
-        const withdrawsData = aggregateDataByMonth(withdrawResponse.data.results);
+        const depositsData = aggregateDataByMonth(depositResponse.data);
+        const withdrawsData = aggregateDataByMonth(withdrawResponse.data);
 
         setSeries([
           {

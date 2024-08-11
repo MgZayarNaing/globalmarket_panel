@@ -31,7 +31,7 @@ const ImageSliderList = () => {
     try {
       setLoading(true);
       const response = await api.get(`${ENDPOINTS.IMAGE_SLIDER}?search=${searchQuery}&page=${page}&page_size=${pageSize}`);
-      setSliders(response.data.results || []);
+      setSliders(response.data || []);
       setTotalCount(response.data.count || 0);
       setLoading(false);
     } catch (error) {

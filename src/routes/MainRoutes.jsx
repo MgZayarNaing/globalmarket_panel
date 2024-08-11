@@ -15,6 +15,8 @@ const Networks = Loadable(lazy(() => import('pages/networks/Networks')));
 const Coin = Loadable(lazy(() => import('pages/coin/Coin')));
 const Deposit = Loadable(lazy(() => import('pages/deposit/Deposit')));
 const Withdraw = Loadable(lazy(() => import('pages/withdraw/Withdraw')));
+const Round = Loadable(lazy(() => import('pages/round/Round')));
+const Roundview = Loadable(lazy(() => import('pages/roundview/Roundview')));
 
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -63,6 +65,13 @@ const MainRoutes = {
     {
       path: 'withdraw',
       element: <Withdraw />
+    },
+    {
+      path: 'round',
+      element: <Round />
+    },{
+      path: 'roundview',
+      element: <Roundview />
     },
 
   ]

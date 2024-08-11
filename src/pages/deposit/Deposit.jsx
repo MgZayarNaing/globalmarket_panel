@@ -36,7 +36,7 @@ const DepositList = () => {
         try {
             setLoading(true);
             const response = await api.get(`${ENDPOINTS.DEPOSITS}?search=${searchQuery}&page=${page}&page_size=${pageSize}`);
-            setDeposits(response.data.results || []);
+            setDeposits(response.data || []);
             setTotalCount(response.data.count || 0);
             setLoading(false);
         } catch (error) {
@@ -48,7 +48,7 @@ const DepositList = () => {
     const fetchCustomers = async () => {
         try {
             const response = await api.get(ENDPOINTS.USERS);
-            setCustomers(response.data.results || []);
+            setCustomers(response.data || []);
         } catch (error) {
             console.error('Fetch customers error:', error);
         }
@@ -57,7 +57,7 @@ const DepositList = () => {
     const fetchCoinTypes = async () => {
         try {
             const response = await api.get(ENDPOINTS.COINTYPES);
-            setCoinTypes(response.data.results || []);
+            setCoinTypes(response.data || []);
         } catch (error) {
             console.error('Fetch coin types error:', error);
         }
@@ -66,7 +66,7 @@ const DepositList = () => {
     const fetchNetworkTypes = async () => {
         try {
             const response = await api.get(ENDPOINTS.NETWORKS);
-            setNetworkTypes(response.data.results || []);
+            setNetworkTypes(response.data || []);
         } catch (error) {
             console.error('Fetch network types error:', error);
         }

@@ -55,8 +55,8 @@ const YearChart = () => {
           api.get(ENDPOINTS.WITHDRAWS)
         ]);
 
-        const depositsData = aggregateDataByYear(depositResponse.data.results);
-        const withdrawsData = aggregateDataByYear(withdrawResponse.data.results);
+        const depositsData = aggregateDataByYear(depositResponse.data);
+        const withdrawsData = aggregateDataByYear(withdrawResponse.data);
 
         const years = [...new Set([...depositsData.map(d => d.year), ...withdrawsData.map(d => d.year)])];
 

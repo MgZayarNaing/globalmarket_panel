@@ -44,7 +44,7 @@ const UserList = () => {
     const fetchUsers = async () => {
       try {
         const response = await api.get(`${ENDPOINTS.USERS}?search=${searchQuery}`);
-        setUsers(response.data.results || []);
+        setUsers(response.data || []);
       } catch (error) {
         setError(error);
       } finally {
@@ -59,7 +59,7 @@ const UserList = () => {
     const fetchUsers = async () => {
       try {
         const response = await api.get(ENDPOINTS.USERS);
-        setUsers(response.data.results);
+        setUsers(response.data);
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -143,7 +143,7 @@ const UserList = () => {
       setOpenModal(false);
       // Fetch updated users list
       const response = await api.get(ENDPOINTS.USERS);
-      setUsers(response.data.results);
+      setUsers(response.data);
       setSnackbar({ open: true, message: 'User updated successfully', severity: 'success' });
     } catch (error) {
       console.error('Update user error:', error);
@@ -157,7 +157,7 @@ const UserList = () => {
       setOpenModal(false);
       // Fetch updated users list
       const response = await api.get(ENDPOINTS.USERS);
-      setUsers(response.data.results);
+      setUsers(response.data);
       setSnackbar({ open: true, message: 'User deleted successfully', severity: 'success' });
     } catch (error) {
       console.error('Delete user error:', error);
@@ -182,7 +182,7 @@ const UserList = () => {
       setOpenModal(false);
       // Fetch updated users list
       const response = await api.get(ENDPOINTS.USERS);
-      setUsers(response.data.results);
+      setUsers(response.data);
       setSnackbar({ open: true, message: 'User created successfully', severity: 'success' });
     } catch (error) {
       console.error('Create user error:', error);

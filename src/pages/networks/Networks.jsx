@@ -34,7 +34,7 @@ const NetworkList = () => {
         try {
             setLoading(true);
             const response = await api.get(`${ENDPOINTS.NETWORKS}?search=${searchQuery}&page=${page}&page_size=${pageSize}`);
-            setNetworks(response.data.results || []);
+            setNetworks(response.data || []);
             setTotalCount(response.data.count || 0);
             setLoading(false);
         } catch (error) {

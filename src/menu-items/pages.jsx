@@ -74,6 +74,20 @@ const pages = {
         url: '/withdraw',
         icon: icons.AntDesignOutlined,
       },
+      {
+        id: 'round',
+        title: 'Round',
+        type: 'item',
+        url: '/round',
+        icon: icons.AntDesignOutlined,
+      },
+      {
+        id: 'roundview',
+        title: 'Roundview',
+        type: 'item',
+        url: '/roundview',
+        icon: icons.AntDesignOutlined,
+      },
     ]
 };
 
