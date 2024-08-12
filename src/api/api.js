@@ -62,7 +62,7 @@ export const ENDPOINTS = {
     UC_List: (uuid) => `${API_BASE_URL}/userchoices/${uuid}/`,
     RAMDOM: `${API_BASE_URL}/random/`,
     ROUNDVIEW: `${API_BASE_URL}/roundview/`,
-
+    RAMDOMCH:(rid)=> `${API_BASE_URL}/random/${rid}/update/`,
 };
 
 export const login = async (credentials) => {
@@ -315,6 +315,16 @@ export const getWithdrawDetail = async (pk) => {
         return response.data;
     } catch (error) {
         console.error('Get withdraw detail error:', error);
+        throw error;
+    }
+};
+
+export const updateRandom = async (rid, data) => {
+    try {
+        const response = await api.put(ENDPOINTS.RAMDOMCH(rid), data);
+        return response.data;
+    } catch (error) {
+        console.error('Update network error:', error);
         throw error;
     }
 };

@@ -62,13 +62,23 @@ import { Box, Stack, TextField, Typography,Button,Container,Grid,Paper,
               minutes = 0;
             }
             let seconds = 60 - now.getSeconds();
-      
+            if(seconds%10==0){
+              fetchroundview();
+            }
             let displayMinutes = minutes < 10 ? "0" + minutes : minutes;
             let displaySeconds = seconds < 10 ? "0" + seconds : seconds;
             countdown.innerHTML = displayMinutes + " : " + displaySeconds;
           }, 1000);
           return () => clearInterval(interval);
         }, []);
+
+        const CHRandom = async() =>{
+          await api.put(ENDPOINTS.RAMDOMCH(ran.id), ran, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        }
   
     return (
       <>
@@ -150,7 +160,7 @@ import { Box, Stack, TextField, Typography,Button,Container,Grid,Paper,
             value={ran.total}
           />
   
-      <Button variant="contained" sx={{marginLeft:1}}>
+      <Button variant="contained" sx={{marginLeft:1}} onClick={CHRandom}>
           save
       </Button>
       </Stack>
@@ -216,6 +226,7 @@ import { Box, Stack, TextField, Typography,Button,Container,Grid,Paper,
       <Typography variant="h3" sx={{textAlign:"center"}}>INTERMEDIATE</Typography>
       <Grid container spacing={1}>
           <Grid item xs={6}>
+          <Typography variant="h5" sx={{textAlign:"center"}}>All User</Typography>
           <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
@@ -239,6 +250,7 @@ import { Box, Stack, TextField, Typography,Button,Container,Grid,Paper,
           </Grid>
   
           <Grid item xs={6}>
+          <Typography variant="h5" sx={{textAlign:"center"}}>Current Winner</Typography>
           <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
@@ -250,6 +262,114 @@ import { Box, Stack, TextField, Typography,Button,Container,Grid,Paper,
             </TableHead>
             <TableBody>
               {data.rm2cw && data.rm2cw.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell align="center">{customers.find(customer => customer.uuid === row.user)?.name || ''}</TableCell>
+                  <TableCell align="center">{row.choice}</TableCell>
+                  <TableCell align="center">{row.amount}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+          </Grid>
+        </Grid> {/* container */}
+      </Grid>
+    </Grid>
+
+    <Grid container spacing={2}>
+      <Grid item xs={6}>
+        <Typography variant="h3" sx={{textAlign:"center"}}>ADVANCED</Typography>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+          <Typography variant="h5" sx={{textAlign:"center"}}>All User</Typography>
+          <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+              <TableCell align="center">User</TableCell>
+                <TableCell align="center">Choice</TableCell>
+                <TableCell align="center">Amount</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.rm3 && data.rm3.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell align="center">{customers.find(customer => customer.uuid === row.user)?.name || ''}</TableCell>
+                  <TableCell align="center">{row.choice}</TableCell>
+                  <TableCell align="center">{row.amount}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+          </Grid>
+  
+          <Grid item xs={6}>
+          <Typography variant="h5" sx={{textAlign:"center"}}>Current Winner</Typography>
+          <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+              <TableCell align="center">User</TableCell>
+                <TableCell align="center">Choice</TableCell>
+                <TableCell align="center">Amount</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.rm3cw && data.rm3cw.map((row) => (
+                <TableRow key={row.id}>
+                 <TableCell align="center">{customers.find(customer => customer.uuid === row.user)?.name || ''}</TableCell>
+                  <TableCell align="center">{row.choice}</TableCell>
+                  <TableCell align="center">{row.amount}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+          </Grid>
+        </Grid> {/* container */}
+      </Grid>
+  
+      <Grid item xs={6}>
+      <Typography variant="h3" sx={{textAlign:"center"}}>VIP ROOM</Typography>
+      <Grid container spacing={1}>
+          <Grid item xs={6}>
+          <Typography variant="h5" sx={{textAlign:"center"}}>All User</Typography>
+          <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+               <TableCell align="center">User</TableCell>
+                <TableCell align="center">Choice</TableCell>
+                <TableCell align="center">Amount</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.rm4 && data.rm4.map((row) => (
+                <TableRow key={row.id}>
+                   <TableCell align="center">{customers.find(customer => customer.uuid === row.user)?.name || ''}</TableCell>
+                  <TableCell align="center">{row.choice}</TableCell>
+                  <TableCell align="center">{row.amount}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+          </Grid>
+  
+          <Grid item xs={6}>
+          <Typography variant="h5" sx={{textAlign:"center"}}>Current Winner</Typography>
+          <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">User</TableCell>
+                <TableCell align="center">Choice</TableCell>
+                <TableCell align="center">Amount</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.rm4cw && data.rm4cw.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell align="center">{customers.find(customer => customer.uuid === row.user)?.name || ''}</TableCell>
                   <TableCell align="center">{row.choice}</TableCell>
