@@ -22,7 +22,7 @@ const icons = {
 
 const pages = {
     id: 'User',
-    title: 'User',
+    title: '',
     type: 'group',
     children: [
       {

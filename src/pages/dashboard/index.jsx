@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 
 // project import
-
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
 import WeekChart from './WeekChart';
-
 
 // API import
 import { api, ENDPOINTS } from '../../api/api';
 import MonthChart from './MonthChat';
 import YearChart from './Year';
-
 
 const DashboardDefault = () => {
   const [totalUsers, setTotalUsers] = useState(0);
@@ -25,26 +22,42 @@ const DashboardDefault = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch Users Count
         const usersResponse = await api.get(ENDPOINTS.USERS);
-        setTotalUsers(usersResponse.data.count || 0);
+        console.log(usersResponse.data); // Check the actual structure
+        setTotalUsers(usersResponse.data.count || 0); // Access correct property
 
+
+        // Fetch Deposits Count
         const depositsResponse = await api.get(ENDPOINTS.DEPOSITS);
+        console.log('Deposits Response:', depositsResponse.data);
         setTotalDeposits(depositsResponse.data.count || 0);
 
+        // Fetch Withdraws Count
         const withdrawsResponse = await api.get(ENDPOINTS.WITHDRAWS);
+        console.log('Withdraws Response:', withdrawsResponse.data);
         setTotalWithdraws(withdrawsResponse.data.count || 0);
 
+        // Fetch Coins Count
         const coinsResponse = await api.get(ENDPOINTS.COINS);
+        console.log('Coins Response:', coinsResponse.data);
         setTotalCoins(coinsResponse.data.count || 0);
 
+        // Fetch Coin Types Count
         const coinTypesResponse = await api.get(ENDPOINTS.COINTYPES);
+        console.log('Coin Types Response:', coinTypesResponse.data);
         setTotalCoinTypes(coinTypesResponse.data.count || 0);
 
+        // Fetch Networks Count
         const networksResponse = await api.get(ENDPOINTS.NETWORKS);
+        console.log('Networks Response:', networksResponse.data);
         setTotalNetworks(networksResponse.data.count || 0);
 
+        // Fetch Image Sliders Count
         const imageSlidersResponse = await api.get(ENDPOINTS.IMAGE_SLIDER);
+        console.log('Image Sliders Response:', imageSlidersResponse.data);
         setTotalImageSliders(imageSlidersResponse.data.count || 0);
+
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
@@ -81,7 +94,6 @@ const DashboardDefault = () => {
         <AnalyticEcommerce title="Total Image Sliders" count={totalImageSliders} />
       </Grid>
       <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
-
 
       <Grid item xs={12} md={6} lg={6}>
         <WeekChart />
