@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { api, ENDPOINTS,API } from '../../api/api';
+import { api, ENDPOINTS, API } from '../../api/api';
 import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useLocation } from 'react-router-dom';
@@ -207,31 +207,25 @@ const ImageSliderList = () => {
 
   console.log(sliders)
 
-  const rows = sliders.map((slider) => ({
-    id: slider.id,
+  const rows = sliders.map((slider, index) => ({
+    id: index + 1, // ID ကို 1 ကနေ စီ
     name: slider.name,
     image: `${API}${slider.image}`,
-  }));
+}));
+
 
   return (
     <Container>
-      <h2>Image Slider List</h2>
       <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create Image Slider</Button>
-        <Button variant="contained" color="secondary" onClick={handleBulkDelete} style={{ marginLeft: 16 }}>Delete Selected</Button>
-      
+      <Button variant="contained" color="secondary" onClick={handleBulkDelete} style={{ marginLeft: 16 }}>Delete Selected</Button>
+
       <div style={{ height: 600, width: '100%', marginTop: 16 }}>
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSize={pageSize}
-          rowsPerPageOptions={[5, 10, 20, 25, 50, 100]}
-          rowCount={totalCount}
-          pagination
-          paginationMode="server"
+          pageSize={10}
+          rowsPerPageOptions={[5, 10, 20]}
           checkboxSelection
-          onSelectionModelChange={(newSelectionModel) => setSelectionModel(newSelectionModel)}
-          onPageChange={(params) => setPage(params.page + 1)}
-          onPageSizeChange={(params) => setPageSize(params.pageSize)}
         />
       </div>
 

@@ -247,15 +247,9 @@ const CoinList = () => {
                 <DataGrid
                     rows={rows}
                     columns={columns}
-                    pageSize={pageSize}
-                    rowsPerPageOptions={[5, 10, 20, 25, 50, 100]}
-                    rowCount={totalCount}
-                    pagination
-                    paginationMode="server"
+                    pageSize={10}
+                    rowsPerPageOptions={[5, 10, 20]}
                     checkboxSelection
-                    onSelectionModelChange={(newSelectionModel) => setSelectionModel(newSelectionModel)}
-                    onPageChange={(params) => setPage(params.page + 1)}
-                    onPageSizeChange={(params) => setPageSize(params.pageSize)}
                 />
             </div>
 

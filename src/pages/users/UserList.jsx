@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { api, ENDPOINTS, updateUser, deleteUser, createUser } from '../../api/api';
-import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Typography, Snackbar, Alert, FormControlLabel, Checkbox, InputAdornment } from '@mui/material';
+import { Container, CircularProgress, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Snackbar, Alert, FormControlLabel, Checkbox, InputAdornment } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import { api, ENDPOINTS, updateUser, deleteUser, createUser } from '../../api/api';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -68,8 +68,6 @@ const UserList = () => {
     };
 
     fetchUsers();
-
-
   }, []);
 
   useEffect(() => {
@@ -104,7 +102,6 @@ const UserList = () => {
     setAnchorEl(event.currentTarget);
     setSelectedUser(user);
     setIsCreate(false);
-    console.log('User selected:', user);
   };
 
   const handleMenuClose = () => {
@@ -112,7 +109,6 @@ const UserList = () => {
   };
 
   const handleDetailClick = () => {
-    console.log('Opening modal for user:', selectedUser);
     setOpenModal(true);
     handleMenuClose();
   };
@@ -141,12 +137,10 @@ const UserList = () => {
         is_approved: formValues.is_approved,
       });
       setOpenModal(false);
-      // Fetch updated users list
       const response = await api.get(ENDPOINTS.USERS);
       setUsers(response.data);
       setSnackbar({ open: true, message: 'User updated successfully', severity: 'success' });
     } catch (error) {
-      console.error('Update user error:', error);
       setSnackbar({ open: true, message: 'Failed to update user', severity: 'error' });
     }
   };
@@ -155,12 +149,10 @@ const UserList = () => {
     try {
       await deleteUser(formValues.uuid);
       setOpenModal(false);
-      // Fetch updated users list
       const response = await api.get(ENDPOINTS.USERS);
       setUsers(response.data);
       setSnackbar({ open: true, message: 'User deleted successfully', severity: 'success' });
     } catch (error) {
-      console.error('Delete user error:', error);
       setSnackbar({ open: true, message: 'Failed to delete user', severity: 'error' });
     }
   };
@@ -180,12 +172,10 @@ const UserList = () => {
         is_approved: formValues.is_approved,
       });
       setOpenModal(false);
-      // Fetch updated users list
       const response = await api.get(ENDPOINTS.USERS);
       setUsers(response.data);
       setSnackbar({ open: true, message: 'User created successfully', severity: 'success' });
     } catch (error) {
-      console.error('Create user error:', error);
       setSnackbar({ open: true, message: 'Failed to create user', severity: 'error' });
     }
   };
@@ -266,13 +256,13 @@ const UserList = () => {
       <h2>User List</h2>
       <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create User</Button>
       <div style={{ height: 600, width: '100%' }}>
-        {rows.length > 0 ? (<DataGrid
+        <DataGrid
           rows={rows}
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[5, 10, 20]}
-        />) : ("No Date Found")}
-
+          checkboxSelection
+        />
       </div>
 
       <Dialog open={openModal} onClose={handleCloseModal}>
