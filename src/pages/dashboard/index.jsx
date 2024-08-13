@@ -25,38 +25,38 @@ const DashboardDefault = () => {
         // Fetch Users Count
         const usersResponse = await api.get(ENDPOINTS.USERS);
         console.log(usersResponse.data); // Check the actual structure
-        setTotalUsers(usersResponse.data.count || 0); // Access correct property
+        setTotalUsers(usersResponse.data.length || 0); // Access correct property
 
 
         // Fetch Deposits Count
         const depositsResponse = await api.get(ENDPOINTS.DEPOSITS);
         console.log('Deposits Response:', depositsResponse.data);
-        setTotalDeposits(depositsResponse.data.count || 0);
+        setTotalDeposits(depositsResponse.data.length || 0);
 
         // Fetch Withdraws Count
         const withdrawsResponse = await api.get(ENDPOINTS.WITHDRAWS);
         console.log('Withdraws Response:', withdrawsResponse.data);
-        setTotalWithdraws(withdrawsResponse.data.count || 0);
+        setTotalWithdraws(withdrawsResponse.data.length || 0);
 
         // Fetch Coins Count
         const coinsResponse = await api.get(ENDPOINTS.COINS);
         console.log('Coins Response:', coinsResponse.data);
-        setTotalCoins(coinsResponse.data.count || 0);
+        setTotalCoins(coinsResponse.data.length || 0);
 
         // Fetch Coin Types Count
         const coinTypesResponse = await api.get(ENDPOINTS.COINTYPES);
         console.log('Coin Types Response:', coinTypesResponse.data);
-        setTotalCoinTypes(coinTypesResponse.data.count || 0);
+        setTotalCoinTypes(coinTypesResponse.data.length || 0);
 
         // Fetch Networks Count
         const networksResponse = await api.get(ENDPOINTS.NETWORKS);
         console.log('Networks Response:', networksResponse.data);
-        setTotalNetworks(networksResponse.data.count || 0);
+        setTotalNetworks(networksResponse.data.length || 0);
 
         // Fetch Image Sliders Count
         const imageSlidersResponse = await api.get(ENDPOINTS.IMAGE_SLIDER);
         console.log('Image Sliders Response:', imageSlidersResponse.data);
-        setTotalImageSliders(imageSlidersResponse.data.count || 0);
+        setTotalImageSliders(imageSlidersResponse.data.length || 0);
 
       } catch (error) {
         console.error('Failed to fetch data:', error);
