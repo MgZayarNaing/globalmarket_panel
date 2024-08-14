@@ -90,6 +90,16 @@ const WithdrawList = () => {
         }
     };
 
+    const SuccessfulStatus = (id) => {
+        fetch(ENDPOINTS.WITHDRAWS_SUCCESS(id), {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(() => console.log("ok"))
+            .catch(error => console.log(error));
+    };
+
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const searchQuery = params.get('search') || '';
@@ -104,7 +114,7 @@ const WithdrawList = () => {
             setFormValues({
                 id: selectedWithdraw.id,
                 quantity: selectedWithdraw.quantity,
-                customer: selectedWithdraw.customer_name,
+                customer: selectedWithdraw.customer_name.uuid,
                 coin_type: selectedWithdraw.coin_type_name,
                 network_type: selectedWithdraw.network_type_name,
                 user_link_address: selectedWithdraw.user_link_address || '',
@@ -122,6 +132,7 @@ const WithdrawList = () => {
     }
 
     const handleMenuClick = (event, withdraw) => {
+        console.log(withdraw)
         setAnchorEl(event.currentTarget);
         setSelectedWithdraw(withdraw);
         setIsCreate(false);
@@ -160,6 +171,9 @@ const WithdrawList = () => {
             setOpenModal(false);
             fetchWithdraws();
             setSnackbar({ open: true, message: 'Withdraw updated successfully', severity: 'success' });
+            if (formValues.status === 1) {
+                SuccessfulStatus(formValues.id);
+            }
         } catch (error) {
             console.error('Update Withdraw error:', error);
             setSnackbar({ open: true, message: 'Failed to update Withdraw', severity: 'error' });
@@ -271,7 +285,7 @@ const WithdrawList = () => {
     const rows = withdraws.map((withdraw) => ({
         id: withdraw.id,
         quantity: withdraw.quantity,
-        customer_name: withdraw.customer_name,
+        customer_name:customers.find(customer => customer.uuid === withdraw.customer)?.name || '',
         coin_type_name: withdraw.coin_type_name,
         network_type_name: withdraw.network_type_name,
         user_link_address: withdraw.user_link_address,
@@ -384,6 +398,7 @@ const WithdrawList = () => {
                                     name="status"
                                     value={formValues.status}
                                     onChange={handleSelectChange}
+                                    disabled={formValues.status !== 0}
                                 >
                                     <MenuItem value={0}>Pending</MenuItem>
                                     <MenuItem value={1}>Successful</MenuItem>

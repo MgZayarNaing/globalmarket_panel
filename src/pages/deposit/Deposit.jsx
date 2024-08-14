@@ -142,9 +142,6 @@ const DepositList = () => {
     };
 
     const handleUpdateDeposit = async () => {
-        if (formValues.status === 1) {
-            SuccessfulStatus(formValues.id);
-        }
         try {
             const formData = new FormData();
             Object.keys(formValues).forEach(key => {
@@ -162,6 +159,9 @@ const DepositList = () => {
             setOpenModal(false);
             fetchDeposits();
             setSnackbar({ open: true, message: 'Deposit updated successfully', severity: 'success' });
+            if (formValues.status === 1) {
+                SuccessfulStatus(formValues.id);
+            }
         } catch (error) {
             console.error('Update Deposit error:', error);
             setSnackbar({ open: true, message: 'Failed to update Deposit', severity: 'error' });
@@ -299,7 +299,7 @@ const DepositList = () => {
     const rows = deposits.map((deposit) => ({
         id: deposit.id,
         quantity: deposit.quantity,
-        customer: customers.find(customer => customer.uuid === deposit.customer)?.uuid || '',
+        customer: customers.find(customer => customer.uuid === deposit.customer)?.name || '',
         coin_type: coinTypes.find(coinType => coinType.id === deposit.coin_type)?.id || '',
         network_type: networkTypes.find(networkType => networkType.id === deposit.network_type)?.id || '',
         status: deposit.status,
