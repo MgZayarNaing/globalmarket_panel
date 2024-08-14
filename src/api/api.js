@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-// const API_BASE_URL = 'https://globalmarket.kanpetletfreedomfund.site/api';
-// const API = 'https://globalmarket.kanpetletfreedomfund.site';
+const API_BASE_URL = 'https://globalmarket.kanpetletfreedomfund.site/api';
+const API = 'https://globalmarket.kanpetletfreedomfund.site';
 
-const API_BASE_URL = 'http://localhost:8000/api';
-const API = 'http://localhost:8000'
+// const API_BASE_URL = 'http://localhost:8000/api';
+// const API = 'http://localhost:8000'
 
 export const ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/login/`,
@@ -63,6 +63,7 @@ export const ENDPOINTS = {
     UC_List: (uuid) => `${API_BASE_URL}/userchoices/${uuid}/`,
     RAMDOM: `${API_BASE_URL}/random/`,
     ROUNDVIEW: `${API_BASE_URL}/roundview/`,
+    RAMDOMCH:(rid)=> `${API_BASE_URL}/random/${rid}/update/`,
 
 };
 

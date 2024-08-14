@@ -166,7 +166,14 @@ const NetworkList = () => {
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'type', headerName: 'Type', width: 200 },
-        { field: 'qrcode', headerName: 'QR Code', width: 200 },
+        {
+            field: 'qrcode',
+            headerName: 'QR Code',
+            width: 200,
+            renderCell: (params) => (
+                params.value ? <img src={`${params.value}`} alt="qrcode" style={{ width: '100%', height: 'auto' }} /> : 'No Screenshot'
+            ),
+        },
         { field: 'link_name', headerName: 'Link Name', width: 200 },
         { field: 'link_address', headerName: 'Link Address', width: 300 },
         { field: 'created_at', headerName: 'Created At', width: 300 },

@@ -231,9 +231,9 @@ const CoinList = () => {
     const rows = coins.map((coin) => ({
         id: coin.id,
         quantity: coin.quantity,
-        customer: coin.customer,
-        coin_type: coin.coin_type,
-        network_type: coin.network_type,
+        customer: customers.find(customer => customer.uuid === coin.customer)?.name || '',
+        coin_type: coinTypes.find(coinType => coinType.id === coin.coin_type)?.type || '',
+        network_type: networkTypes.find(networkType => networkType.id === coin.network_type)?.type || '',
         time: coin.time,
     }));
 
