@@ -228,8 +228,8 @@ const CoinList = () => {
         },
     ];
 
-    const rows = coins.map((coin) => ({
-        id: coin.id,
+    const rows = coins.map((coin,index) => ({
+        id: index+1,
         quantity: coin.quantity,
         customer: customers.find(customer => customer.uuid === coin.customer)?.name || '',
         coin_type: coinTypes.find(coinType => coinType.id === coin.coin_type)?.type || '',
@@ -241,7 +241,6 @@ const CoinList = () => {
         <Container>
             <h2>Coin List</h2>
             <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create Coin</Button>
-            <Button variant="contained" color="secondary" onClick={handleBulkDelete} style={{ marginLeft: 16 }} disabled={selectionModel.length === 0}>Delete Selected</Button>
 
             <div style={{ height: 600, width: '100%', marginTop: 16 }}>
                 <DataGrid
@@ -249,7 +248,6 @@ const CoinList = () => {
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[5, 10, 20]}
-                    checkboxSelection
                 />
             </div>
 

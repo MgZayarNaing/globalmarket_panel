@@ -217,15 +217,12 @@ const ImageSliderList = () => {
   return (
     <Container>
       <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create Image Slider</Button>
-      <Button variant="contained" color="secondary" onClick={handleBulkDelete} style={{ marginLeft: 16 }}>Delete Selected</Button>
-
       <div style={{ height: 600, width: '100%', marginTop: 16 }}>
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[5, 10, 20]}
-          checkboxSelection
         />
       </div>
 

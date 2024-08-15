@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 
 // project import
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
@@ -9,6 +9,7 @@ import WeekChart from './WeekChart';
 import { api, ENDPOINTS } from '../../api/api';
 import MonthChart from './MonthChat';
 import YearChart from './Year';
+import MainCard from 'components/MainCard';
 
 const DashboardDefault = () => {
   const [totalUsers, setTotalUsers] = useState(0);
@@ -18,6 +19,7 @@ const DashboardDefault = () => {
   const [totalCoinTypes, setTotalCoinTypes] = useState(0);
   const [totalNetworks, setTotalNetworks] = useState(0);
   const [totalImageSliders, setTotalImageSliders] = useState(0);
+  const [currentRound,setCurrentRound] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +60,9 @@ const DashboardDefault = () => {
         console.log('Image Sliders Response:', imageSlidersResponse.data);
         setTotalImageSliders(imageSlidersResponse.data.length || 0);
 
+        const response = await api.get(ENDPOINTS.RAMDOM);
+        choosecurrent(response.data)
+
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
@@ -66,11 +71,36 @@ const DashboardDefault = () => {
     fetchData();
   }, []);
 
+  const choosecurrent = (data) => {
+      const cur = data.find((r)=>{
+        return r.status == 0;
+      })
+      setCurrentRound(cur.roundno)
+  }
+
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}
+      
       <Grid item xs={12} sx={{ mb: -2.25 }}>
         <Typography variant="h5">Dashboard</Typography>
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+      <MainCard contentSX={{ p: 2.25 }}>
+      <Stack spacing={0.5} sx={{ py: 2.25 }}>
+        <Typography variant="h6" color="text.secondary">
+          Current Round
+        </Typography>
+        <Grid container alignItems="center">
+          <Grid item>
+            <Typography variant="h4" color="inherit">
+              {currentRound}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Stack>
+    </MainCard>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce title="Total Users" count={totalUsers} />
@@ -93,6 +123,7 @@ const DashboardDefault = () => {
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce title="Total Image Sliders" count={totalImageSliders} />
       </Grid>
+     
       <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
       <Grid item xs={12} md={6} lg={6}>

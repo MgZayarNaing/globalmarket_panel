@@ -142,6 +142,9 @@ const DepositList = () => {
     };
 
     const handleUpdateDeposit = async () => {
+        formValues.customer = customers.find(customer => customer.name === formValues.customer)?.uuid || '';
+        formValues.coin_type = coinTypes.find(cointype => cointype.type === formValues.coin_type)?.id || '';
+        formValues.network_type = networkTypes.find(networktype => networktype.type === formValues.network_type)?.id || '';
         try {
             const formData = new FormData();
             Object.keys(formValues).forEach(key => {
@@ -296,8 +299,8 @@ const DepositList = () => {
         },
     ];
 
-    const rows = deposits.map((deposit) => ({
-        id: deposit.id,
+    const rows = deposits.map((deposit,index) => ({
+        id: index+1,
         quantity: deposit.quantity,
         customer: customers.find(customer => customer.uuid === deposit.customer)?.name || '',
         coin_type: coinTypes.find(coinType => coinType.id === deposit.coin_type)?.type || '',
@@ -311,15 +314,12 @@ const DepositList = () => {
         <Container>
             <h2>Deposit List</h2>
             <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create Deposit</Button>
-            <Button variant="contained" color="secondary" onClick={handleBulkDelete} style={{ marginLeft: 16 }} disabled={selectionModel.length === 0}>Delete Selected</Button>
-
             <div style={{ height: 600, width: '100%', marginTop: 16 }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[5, 10, 20]}
-                    checkboxSelection
                 />
             </div>
 
@@ -356,7 +356,7 @@ const DepositList = () => {
                                 onChange={handleSelectChange}
                             >
                                 {customers.map((customer) => (
-                                    <MenuItem key={customer.uuid} value={customer.uuid}>
+                                    <MenuItem key={customer.uuid} value={customer.name}>
                                         {customer.name}
                                     </MenuItem>
                                 ))}
@@ -372,7 +372,7 @@ const DepositList = () => {
                                 onChange={handleSelectChange}
                             >
                                 {coinTypes.map((coinType) => (
-                                    <MenuItem key={coinType.id} value={coinType.id}>
+                                    <MenuItem key={coinType.id} value={coinType.type}>
                                         {coinType.type}
                                     </MenuItem>
                                 ))}
@@ -388,7 +388,7 @@ const DepositList = () => {
                                 onChange={handleSelectChange}
                             >
                                 {networkTypes.map((networkType) => (
-                                    <MenuItem key={networkType.id} value={networkType.id}>
+                                    <MenuItem key={networkType.id} value={networkType.type}>
                                         {networkType.type}
                                     </MenuItem>
                                 ))}

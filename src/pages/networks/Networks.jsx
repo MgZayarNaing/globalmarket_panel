@@ -199,8 +199,8 @@ const NetworkList = () => {
         },
     ];
 
-    const rows = networks.map((network) => ({
-        id: network.id,
+    const rows = networks.map((network,index) => ({
+        id: index+1,
         type: network.type,
         qrcode: `${API}${network.qrcode}`,
         link_name: network.link_name,
@@ -217,15 +217,12 @@ const NetworkList = () => {
         <Container>
             <h2>Network List</h2>
             <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create Network</Button>
-            <Button variant="contained" color="secondary" onClick={handleBulkDelete} style={{ marginLeft: 16 }} disabled={selectionModel.length === 0}>Delete Selected</Button>
-
             <div style={{ height: 600, width: '100%', marginTop: 16 }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[5, 10, 20]}
-                    checkboxSelection
                 />
             </div>
 

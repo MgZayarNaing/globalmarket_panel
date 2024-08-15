@@ -114,7 +114,7 @@ const WithdrawList = () => {
             setFormValues({
                 id: selectedWithdraw.id,
                 quantity: selectedWithdraw.quantity,
-                customer: selectedWithdraw.customer_name.uuid,
+                customer: selectedWithdraw.customer_name,
                 coin_type: selectedWithdraw.coin_type_name,
                 network_type: selectedWithdraw.network_type_name,
                 user_link_address: selectedWithdraw.user_link_address || '',
@@ -166,6 +166,9 @@ const WithdrawList = () => {
     };
 
     const handleUpdateWithdraw = async () => {
+        formValues.customer = customers.find(customer => customer.name === formValues.customer)?.uuid || '';
+        formValues.coin_type = coinTypes.find(cointype => cointype.type === formValues.coin_type)?.id || '';
+        formValues.network_type = networkTypes.find(networktype => networktype.type === formValues.network_type)?.id || '';
         try {
             await api.put(ENDPOINTS.WITHDRAW_UPDATE(formValues.id), formValues);
             setOpenModal(false);
@@ -282,8 +285,8 @@ const WithdrawList = () => {
         },
     ];
 
-    const rows = withdraws.map((withdraw) => ({
-        id: withdraw.id,
+    const rows = withdraws.map((withdraw,index) => ({
+        id: index+1,
         quantity: withdraw.quantity,
         customer_name:customers.find(customer => customer.uuid === withdraw.customer)?.name || '',
         coin_type_name: coinTypes.find(coinType => coinType.id === withdraw.coin_type)?.type || '',
@@ -297,15 +300,12 @@ const WithdrawList = () => {
         <Container>
             <h2>Withdraw List</h2>
             <Button variant="contained" color="primary" onClick={handleOpenCreateModal}>Create Withdraw</Button>
-            <Button variant="contained" color="secondary" onClick={handleBulkDelete} style={{ marginLeft: 16 }} disabled={selectionModel.length === 0}>Delete Selected</Button>
-
             <div style={{ height: 600, width: '100%', marginTop: 16 }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[5, 10, 20]}
-                    checkboxSelection
                 />
             </div>
 
@@ -343,7 +343,7 @@ const WithdrawList = () => {
                                     onChange={handleSelectChange}
                                 >
                                     {customers.map((customer) => (
-                                        <MenuItem key={customer.uuid} value={customer.uuid}>
+                                        <MenuItem key={customer.uuid} value={customer.name}>
                                             {customer.name}
                                         </MenuItem>
                                     ))}
@@ -359,7 +359,7 @@ const WithdrawList = () => {
                                     onChange={handleSelectChange}
                                 >
                                     {coinTypes.map((coinType) => (
-                                        <MenuItem key={coinType.id} value={coinType.id}>
+                                        <MenuItem key={coinType.id} value={coinType.type}>
                                             {coinType.type}
                                         </MenuItem>
                                     ))}
@@ -375,7 +375,7 @@ const WithdrawList = () => {
                                     onChange={handleSelectChange}
                                 >
                                     {networkTypes.map((networkType) => (
-                                        <MenuItem key={networkType.id} value={networkType.id}>
+                                        <MenuItem key={networkType.id} value={networkType.type}>
                                             {networkType.type}
                                         </MenuItem>
                                     ))}

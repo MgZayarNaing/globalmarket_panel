@@ -39,7 +39,7 @@ const UserList = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const searchQuery = params.get('search');
+    const searchQuery = params.get('search')|| '';
 
     const fetchUsers = async () => {
       try {
@@ -261,7 +261,6 @@ const UserList = () => {
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[5, 10, 20]}
-          checkboxSelection
         />
       </div>
 
