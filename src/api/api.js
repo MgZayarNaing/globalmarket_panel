@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://globalmarket.kanpetletfreedomfund.site/api';
-const API = 'https://globalmarket.kanpetletfreedomfund.site';
+const API_BASE_URL = 'https://market.stockglobalmarket.com/api';
+const API = 'https://market.stockglobalmarket.com';
 
 // const API_BASE_URL = 'http://localhost:8000/api';
 // const API = 'http://localhost:8000'
