@@ -164,7 +164,7 @@ const NetworkList = () => {
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'no', headerName: 'No', width: 100 },
         { field: 'type', headerName: 'Type', width: 200 },
         {
             field: 'qrcode',
@@ -200,7 +200,8 @@ const NetworkList = () => {
     ];
 
     const rows = networks.map((network,index) => ({
-        id: index+1,
+        id:network.id,
+        no: index+1,
         type: network.type,
         qrcode: `${API}${network.qrcode}`,
         link_name: network.link_name,

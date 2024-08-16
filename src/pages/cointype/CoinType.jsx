@@ -147,7 +147,7 @@ const CoinTypeList = () => {
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'no', headerName: 'No', width: 100 },
         { field: 'type', headerName: 'Type', width: 200 },
         { field: 'created_at', headerName: 'Created At', width: 300 },
         {
@@ -173,7 +173,8 @@ const CoinTypeList = () => {
     ];
 
     const rows = cointypes.map((cointype,index) => ({
-        id: index+1,
+        id:cointype.id,
+        no: index+1,
         type: cointype.type,
         created_at: cointype.created_at,
     }));

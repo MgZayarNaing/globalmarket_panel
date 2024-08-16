@@ -137,6 +137,9 @@ const CoinList = () => {
     };
 
     const handleUpdateCoin = async () => {
+        formValues.customer = customers.find(customer => customer.name === formValues.customer)?.uuid || '';
+        formValues.coin_type = coinTypes.find(cointype => cointype.type === formValues.coin_type)?.id || '';
+        formValues.network_type = networkTypes.find(networktype => networktype.type === formValues.network_type)?.id || '';
         try {
             await api.put(ENDPOINTS.COIN_UPDATE(formValues.id), formValues);
             setOpenModal(false);
@@ -200,7 +203,7 @@ const CoinList = () => {
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'no', headerName: 'No', width: 100 },
         { field: 'quantity', headerName: 'Quantity', width: 200 },
         { field: 'customer', headerName: 'Customer', width: 200 },
         { field: 'coin_type', headerName: 'Coin Type', width: 200 },
@@ -229,7 +232,8 @@ const CoinList = () => {
     ];
 
     const rows = coins.map((coin,index) => ({
-        id: index+1,
+        id:coin.id,
+        no: index+1,
         quantity: coin.quantity,
         customer: customers.find(customer => customer.uuid === coin.customer)?.name || '',
         coin_type: coinTypes.find(coinType => coinType.id === coin.coin_type)?.type || '',
@@ -284,7 +288,7 @@ const CoinList = () => {
                                 onChange={handleSelectChange}
                             >
                                 {customers.map((customer) => (
-                                    <MenuItem key={customer.uuid} value={customer.uuid}>
+                                    <MenuItem key={customer.uuid} value={customer.name}>
                                         {customer.name}
                                     </MenuItem>
                                 ))}
@@ -300,7 +304,7 @@ const CoinList = () => {
                                 onChange={handleSelectChange}
                             >
                                 {coinTypes.map((coinType) => (
-                                    <MenuItem key={coinType.id} value={coinType.id}>
+                                    <MenuItem key={coinType.id} value={coinType.type}>
                                         {coinType.type}
                                     </MenuItem>
                                 ))}
@@ -316,7 +320,7 @@ const CoinList = () => {
                                 onChange={handleSelectChange}
                             >
                                 {networkTypes.map((networkType) => (
-                                    <MenuItem key={networkType.id} value={networkType.id}>
+                                    <MenuItem key={networkType.id} value={networkType.type}>
                                         {networkType.type}
                                     </MenuItem>
                                 ))}

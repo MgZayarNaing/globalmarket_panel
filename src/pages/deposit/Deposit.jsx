@@ -159,26 +159,26 @@ const DepositList = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setOpenModal(false);
-            fetchDeposits();
-            setSnackbar({ open: true, message: 'Deposit updated successfully', severity: 'success' });
             if (formValues.status === 1) {
                 SuccessfulStatus(formValues.id);
             }
+            setOpenModal(false);
+            fetchDeposits();
+            setSnackbar({ open: true, message: 'Deposit updated successfully', severity: 'success' });
         } catch (error) {
             console.error('Update Deposit error:', error);
             setSnackbar({ open: true, message: 'Failed to update Deposit', severity: 'error' });
         }
     };
 
-    const SuccessfulStatus = (id) => {
-        fetch(ENDPOINTS.DEPOSIT_SUCCESS(id), {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-            .then(() => console.log("ok"))
-            .catch(error => console.log(error));
+    const SuccessfulStatus = async(id) => {
+        try {
+            const response = await api.get(ENDPOINTS.DEPOSIT_SUCCESS(id));
+            return response.data;
+        } catch (error) {
+            console.error('Get withdraw detail error:', error);
+            throw error;
+        }
     };
 
     const handleDeleteDeposit = async (id) => {
@@ -257,7 +257,7 @@ const DepositList = () => {
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'no', headerName: 'No', width: 100 },
         { field: 'quantity', headerName: 'Quantity', width: 200 },
         { field: 'customer', headerName: 'Customer', width: 200 },
         { field: 'coin_type', headerName: 'Coin Type', width: 200 },
@@ -300,7 +300,8 @@ const DepositList = () => {
     ];
 
     const rows = deposits.map((deposit,index) => ({
-        id: index+1,
+        id:deposit.id,
+        no: index+1,
         quantity: deposit.quantity,
         customer: customers.find(customer => customer.uuid === deposit.customer)?.name || '',
         coin_type: coinTypes.find(coinType => coinType.id === deposit.coin_type)?.type || '',

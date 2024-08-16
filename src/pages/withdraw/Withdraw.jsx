@@ -90,14 +90,14 @@ const WithdrawList = () => {
         }
     };
 
-    const SuccessfulStatus = (id) => {
-        fetch(ENDPOINTS.WITHDRAWS_SUCCESS(id), {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-            .then(() => console.log("ok"))
-            .catch(error => console.log(error));
+    const SuccessfulStatus = async(id) => {
+        try {
+            const response = await api.get(ENDPOINTS.WITHDRAWS_SUCCESS(id));
+            return response.data;
+        } catch (error) {
+            console.error('Get withdraw detail error:', error);
+            throw error;
+        }
     };
 
     useEffect(() => {
@@ -171,12 +171,12 @@ const WithdrawList = () => {
         formValues.network_type = networkTypes.find(networktype => networktype.type === formValues.network_type)?.id || '';
         try {
             await api.put(ENDPOINTS.WITHDRAW_UPDATE(formValues.id), formValues);
-            setOpenModal(false);
-            fetchWithdraws();
-            setSnackbar({ open: true, message: 'Withdraw updated successfully', severity: 'success' });
             if (formValues.status === 1) {
                 SuccessfulStatus(formValues.id);
             }
+            setOpenModal(false);
+            fetchWithdraws();
+            setSnackbar({ open: true, message: 'Withdraw updated successfully', severity: 'success' });
         } catch (error) {
             console.error('Update Withdraw error:', error);
             setSnackbar({ open: true, message: 'Failed to update Withdraw', severity: 'error' });
@@ -250,7 +250,7 @@ const WithdrawList = () => {
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'no', headerName: 'No', width: 100 },
         { field: 'quantity', headerName: 'Quantity', width: 200 },
         { field: 'customer_name', headerName: 'Customer', width: 200 },
         { field: 'coin_type_name', headerName: 'Coin Type', width: 200 },
@@ -286,7 +286,8 @@ const WithdrawList = () => {
     ];
 
     const rows = withdraws.map((withdraw,index) => ({
-        id: index+1,
+        id: withdraw.id,
+        no: index+1,
         quantity: withdraw.quantity,
         customer_name:customers.find(customer => customer.uuid === withdraw.customer)?.name || '',
         coin_type_name: coinTypes.find(coinType => coinType.id === withdraw.coin_type)?.type || '',

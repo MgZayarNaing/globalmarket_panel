@@ -173,7 +173,7 @@ const ImageSliderList = () => {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 100 },
+    { field: 'no', headerName: 'No', width: 100 },
     { field: 'name', headerName: 'Name', width: 200 },
     {
       field: 'image',
@@ -208,7 +208,8 @@ const ImageSliderList = () => {
   console.log(sliders)
 
   const rows = sliders.map((slider, index) => ({
-    id: index + 1, // ID ကို 1 ကနေ စီ
+    id:slider.id,
+    no: index + 1, // ID ကို 1 ကနေ စီ
     name: slider.name,
     image: `${API}${slider.image}`,
 }));
