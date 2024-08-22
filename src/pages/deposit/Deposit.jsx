@@ -29,6 +29,8 @@ const DepositList = () => {
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const [selectionModel, setSelectionModel] = useState([]);
+    const [imgopen, setimgopen] = useState(false);
+    const [image, setimage] = useState();
 
     const location = useLocation();
 
@@ -256,6 +258,11 @@ const DepositList = () => {
         }
     };
 
+    const Imgopen = (img)=>{
+        setimgopen(true)
+        setimage(img)
+    }
+
     const columns = [
         { field: 'no', headerName: 'No', width: 100 },
         { field: 'quantity', headerName: 'Quantity', width: 200 },
@@ -274,7 +281,8 @@ const DepositList = () => {
             headerName: 'Screenshot',
             width: 200,
             renderCell: (params) => (
-                params.value ? <img src={`${API}${params.value}`} alt="screenshot" style={{ width: '100%', height: 'auto' }} /> : 'No Screenshot'
+                params.value ? <img src={`${API}${params.value}`} alt="screenshot" style={{ width: '100%', height: 'auto' }} 
+                onClick={()=>{Imgopen(params.value)}}/> : 'No Screenshot'
             ),
         },
         {
@@ -444,6 +452,10 @@ const DepositList = () => {
                         </>
                     )}
                 </DialogActions>
+            </Dialog>
+
+            <Dialog open={imgopen} onClose={()=>setimgopen(false)}>
+                    <img src={`${API}${image}`} alt="screenshot" style={{ width: '100%', height: 'auto' }}/>
             </Dialog>
 
             <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
